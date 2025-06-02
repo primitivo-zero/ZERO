@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>El Penta Hosting</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -14,118 +14,138 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #f2f4f8;
-      color: #333;
-      line-height: 1.6;
-      padding: 20px;
+      background: black;
+      color: white;
     }
 
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    }
-
-    h1 {
+    .center-screen {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
       text-align: center;
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      margin-bottom: 16px;
-      font-size: 1rem;
-    }
-
-    ul {
-      margin: 10px 0 20px 20px;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    a {
-      color: #0077cc;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .emoji {
-      font-size: 1.3rem;
-      margin-right: 6px;
-    }
-
-    .highlight {
-      background: #eef7ff;
-      border-left: 4px solid #0077cc;
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
     }
 
     .button {
-      display: inline-block;
-      background: #0077cc;
-      color: white;
+      background: white;
+      color: black;
       padding: 10px 20px;
+      border: none;
       border-radius: 10px;
-      text-decoration: none;
-      margin-top: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 20px;
     }
 
     .button:hover {
+      background: #ccc;
+    }
+
+    .main-content {
+      display: none;
+      background: #f2f4f8;
+      color: #333;
+      padding: 30px;
+    }
+
+    .submenu {
+      margin-top: 20px;
+    }
+
+    .submenu button {
+      margin: 5px;
+      padding: 10px 15px;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .submenu button:hover {
       background: #005fa3;
     }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
+    .section {
+      display: none;
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
 
-      h1 {
-        font-size: 1.5rem;
-      }
+    h2 {
+      margin-bottom: 10px;
+    }
 
-      p, li {
-        font-size: 0.95rem;
-      }
+    ul {
+      margin-left: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🏠 El Penta Hosting</h1>
-    
-    <div class="highlight">
-      <p><span class="emoji">💬</span> Te ofrecemos soluciones confiables y asequibles para que tu sitio web esté siempre en línea. Con tecnología de última generación y soporte técnico personalizado, garantizamos una presencia en Internet estable, segura y rápida.</p>
-    </div>
 
-    <p><span class="emoji">💸</span> <strong>Plan Normal – $20 USD/mes</strong></p>
-    <p>Ideal para sitios personales, pequeñas empresas o proyectos en crecimiento. Incluye:</p>
-    <ul>
-      <li>10 GB de almacenamiento SSD</li>
-      <li>100 GB de transferencia mensual</li>
-      <li>1 dominio incluido</li>
-      <li>Certificado SSL gratuito</li>
-      <li>Soporte técnico 24/7</li>
-    </ul>
-    <p>Próximamente ofreceremos planes avanzados con más recursos y beneficios.</p>
-
-    <div class="highlight">
-      <p><span class="emoji">🛒</span> ¿Listo para lanzar tu sitio? Contratar es muy fácil: elige tu plan, completa el formulario y en minutos estarás en línea. Aceptamos tarjeta, PayPal o transferencia bancaria.</p>
-      <a href="#" class="button">Comenzar contratación ✅</a>
-    </div>
-
-    <p><span class="emoji">👤</span> <strong>¿Quién está detrás de El Penta Hosting?</strong></p>
-    <p>Mi nombre es El Penta, un apasionado por la tecnología con años de experiencia en administración de servidores y soporte web. Mi objetivo es ofrecerte un servicio de hosting confiable, rápido y con atención personalizada. Estoy aquí para ayudarte a hacer crecer tu presencia en Internet sin complicaciones.</p>
+  <!-- Pantalla de inicio -->
+  <div class="center-screen" id="startScreen">
+    <h1>Penta Hosting</h1>
+    <button class="button" onclick="enterSite()">Entrar</button>
   </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content" id="mainContent">
+    <h1>🏠 Bienvenido a El Penta Hosting</h1>
+
+    <div class="submenu">
+      <button onclick="showSection('info')">Información de Penta Hosting</button>
+      <button onclick="showSection('planes')">Ver Planes</button>
+      <button onclick="showSection('estado')">Ver Mi Hosting</button>
+    </div>
+
+    <!-- Sección de Información -->
+    <div class="section" id="info">
+      <h2>Información de Penta Hosting</h2>
+      <p><strong>Propietario:</strong> Primitivo</p>
+      <p><strong>Ubicación:</strong> Hosting México</p>
+    </div>
+
+    <!-- Sección de Planes -->
+    <div class="section" id="planes">
+      <h2>Planes Disponibles</h2>
+      <p><strong>Plan Normal – $20 USD/mes</strong></p>
+      <ul>
+        <li>10 GB de almacenamiento SSD</li>
+        <li>100 GB de transferencia mensual</li>
+        <li>1 dominio incluido</li>
+        <li>Certificado SSL gratuito</li>
+        <li>Soporte técnico 24/7</li>
+      </ul>
+    </div>
+
+    <!-- Sección de Estado -->
+    <div class="section" id="estado">
+      <h2>Mi Hosting</h2>
+      <p>No tienes contratos activos en este momento.</p>
+      <!-- Aquí podrías conectar con backend en el futuro para mostrar datos reales -->
+    </div>
+  </div>
+
+  <script>
+    function enterSite() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+    }
+
+    function showSection(sectionId) {
+      // Oculta todas las secciones
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(sec => sec.style.display = 'none');
+
+      // Muestra la seleccionada
+      document.getElementById(sectionId).style.display = 'block';
+    }
+  </script>
 </body>
 </html>
+
