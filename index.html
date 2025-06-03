@@ -4,52 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Penta Hosting</title>
-
-  <!-- Fuente -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    /* ----------------- Variables rápidas ----------------- */
-    :root {
-      --clr-bg-filter: rgba(0, 0, 0, 0.65); /* oscurece la imagen */
-      --clr-text-main: #fff;
-      --clr-text-sub: #ccc;
-      --clr-accent: #fff;
-      --clr-accent-hover: #ddd;
-      --radius-pill: 50px;
-    }
-
-    /* ----------------- Reset y base ----------------- */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      font-family: 'Inter', sans-serif;
-      color: var(--clr-text-main);
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
     }
 
-    /* Imagen de fondo en pantalla completa */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      /* 🔄 Cambia aquí si tu ruta/archivo es diferente */
-      background: url('images/background.jpg') center / cover no-repeat;
-      z-index: -2;
-    }
-
-    /* Capa oscura para que el texto se lea */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: var(--clr-bg-filter);
-      z-index: -1;
-    }
-
-    /* ----------------- Utilidades ----------------- */
     .center-screen {
       height: 100vh;
       display: flex;
@@ -58,84 +21,78 @@
       align-items: center;
       text-align: center;
       padding: 20px;
+      background: #0066cc;
+      color: white;
     }
 
-    .button,
-    .button-link {
-      display: inline-block;
-      background: var(--clr-accent);
-      color: #000;
-      padding: 12px 30px;
-      border: none;
-      border-radius: var(--radius-pill);
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      transition: background 0.3s ease;
-      text-decoration: none; /* para los enlaces */
+    h1 {
+      margin-bottom: 10px;
     }
-    .button:hover,
-    .button-link:hover { background: var(--clr-accent-hover); }
+
+    .subtitle {
+      margin-bottom: 20px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: white;
+      color: #0066cc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
     .main-content {
       display: none;
-      padding: 40px 20px;
-      text-align: center;
-      min-height: 100vh;
+      padding: 30px;
     }
 
-    h1 { font-size: 2.5rem; margin-bottom: 10px; }
-    .subtitle { color: var(--clr-text-sub); font-size: 1.2rem; margin-bottom: 30px; }
+    .submenu {
+      margin-bottom: 20px;
+    }
 
-    .submenu { margin-top: 30px; }
     .submenu button {
-      margin: 10px;
-      padding: 10px 20px;
-      background: var(--clr-accent);
-      color: #000;
-      border: none;
-      border-radius: 30px;
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
       cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
     }
-    .submenu button:hover { background: var(--clr-accent-hover); }
 
     .section {
       display: none;
-      background: rgba(0,0,0,0.5);
-      padding: 30px;
-      margin-top: 30px;
-      border-radius: 15px;
-      max-width: 700px;
-      margin-inline: auto;
-      text-align: left;
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
     }
-    .section h2 { margin-bottom: 15px; font-size: 1.8rem; color: var(--clr-text-main); }
-    .section p, .section li { color: var(--clr-text-sub); font-size: 1rem; margin-bottom: 10px; }
-    ul { padding-left: 20px; }
 
-    @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
-      .section { padding: 20px; }
+    .button-link {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #0066cc;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .button-link:hover {
+      background: #004999;
     }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de inicio -->
   <div class="center-screen" id="startScreen">
-    <!-- Si quieres un logotipo aparte, descomenta la línea siguiente y sube tu logo en /images -->
-    <!-- <img src="images/logo.png" alt="Logo Penta Hosting" width="180" style="margin-bottom: 20px;" /> -->
     <h1>Penta Hosting</h1>
-    <p class="subtitle">Tu sitio, nuestra responsabilidad. Hosting rápido, seguro y confiable.</p>
+    <p class="subtitle">Tu sitio, nuestra responsabilidad</p>
     <button class="button" onclick="enterSite()">Entrar</button>
   </div>
 
-  <!-- Contenido principal -->
   <div class="main-content" id="mainContent">
     <h1>Bienvenido a Penta Hosting</h1>
-    <p class="subtitle">El mejor servicio de hosting para tus proyectos en línea</p>
+    <p>El mejor servicio de hosting para tus proyectos en línea</p>
 
     <div class="submenu">
       <button onclick="showSection('info')">Información de Penta Hosting</button>
@@ -143,53 +100,48 @@
       <button onclick="showSection('estado')">Ver Mi Hosting</button>
     </div>
 
-    <!-- Sección: Información -->
     <div class="section" id="info">
       <h2>Información de Penta Hosting</h2>
-      <p><strong>Propietario:</strong> Primitivo González, apasionado por la tecnología y el internet libre.</p>
-      <p><strong>Ubicación:</strong> México. Servidores rápidos, conectados directamente a los mejores centros de datos del país.</p>
-      <p>En Penta Hosting ofrecemos soluciones accesibles y confiables para todo tipo de sitios web. Nuestro objetivo es que cualquiera, desde un estudiante hasta una empresa, pueda tener presencia en línea sin complicaciones.</p>
+      <p><strong>Propietario:</strong> Primitivo González</p>
+      <p><strong>Ubicación:</strong> México</p>
+      <p>Ofrecemos hosting confiable, accesible y de calidad para todo tipo de usuarios.</p>
     </div>
 
-    <!-- Sección: Planes -->
     <div class="section" id="planes">
       <h2>Planes Disponibles</h2>
       <p><strong>Plan Normal – $20 USD/mes</strong></p>
       <ul>
-        <li>10 GB de almacenamiento SSD ultrarrápido</li>
+        <li>10 GB de almacenamiento SSD</li>
         <li>100 GB de transferencia mensual</li>
         <li>1 dominio incluido</li>
-        <li>Certificado SSL gratuito (https)</li>
-        <li>Soporte técnico personalizado 24/7</li>
+        <li>Soporte 24/7</li>
       </ul>
-      <p>¡Ideal para sitios personales, pequeños negocios o blogs en crecimiento! Pronto añadiremos planes premium con mayores beneficios y espacio.</p>
+      <p>¡Ideal para sitios personales o pequeños negocios!</p>
 
-      <!-- Enlace a Hostinger (lo que pediste) -->
-      <a href="https://www.hostinger.com/" target="_blank" rel="noopener noreferrer" class="button-link">
+      <!-- Enlace a Hostinger -->
+      <a href="https://www.hostinger.com/" target="_blank" class="button-link">
         Ver más planes en Hostinger
       </a>
     </div>
 
-    <!-- Sección: Estado -->
     <div class="section" id="estado">
       <h2>Mi Hosting</h2>
-      <p>Actualmente no tienes ningún contrato activo.</p>
-      <p>Cuando contrates un plan, aquí podrás ver toda la información sobre tu hosting, fechas de vencimiento, opciones de renovación y más.</p>
-      <p><em>¿Listo para comenzar tu proyecto?</em> ¡Ve a la sección de planes y contrata el que más se ajuste a ti!</p>
+      <p>No tienes ningún plan activo en este momento.</p>
+      <p>Contrata uno desde la sección de planes para ver más información aquí.</p>
     </div>
   </div>
 
-  <!-- ----------------- Scripts ----------------- -->
   <script>
     function enterSite() {
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
     }
+
     function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(sec => sec.style.display = 'none');
       document.getElementById(sectionId).style.display = 'block';
     }
   </script>
-
 </body>
 </html>
