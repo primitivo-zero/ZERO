@@ -1,105 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Penta Hosting</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penta PDF - Herramientas PDF</title>
   <style>
-    .submenu {
-      margin-bottom: 20px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
     }
-
-    .submenu button {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 14px;
-      cursor: pointer;
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
     }
-
-    .section {
-      display: none;
-      margin-top: 20px;
+    h1 {
+      margin: 0;
+    }
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .tool {
       background: white;
       padding: 20px;
       border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
     }
-
-    .button-link {
-      display: inline-block;
-      margin-top: 15px;
+    .tool h3 {
+      margin-bottom: 10px;
+    }
+    .tool button {
       padding: 10px 15px;
-      background: #0066cc;
+      background-color: #4a90e2;
       color: white;
-      text-decoration: none;
+      border: none;
       border-radius: 5px;
+      cursor: pointer;
     }
-
-    .button-link:hover {
-      background: #004999;
+    .tool button:hover {
+      background-color: #357ABD;
     }
-
-    .main-content {
-      display: none; /* Ocultar al inicio para que se muestre con el botón */
+    input[type="file"] {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-
-  <div class="center-screen" id="startScreen">
-    <h1>Penta Hosting</h1>
-    <p class="subtitle">Tu sitio, nuestra responsabilidad</p>
-    <button class="button" onclick="enterSite()">Entrar</button>
-  </div>
-
-  <div class="main-content" id="mainContent">
-    <h1>Bienvenido a Penta Hosting</h1>
-    <p>El mejor servicio de hosting para tus proyectos en línea</p>
-
-    <div class="submenu">
-      <button onclick="showSection('info')">Información de Penta Hosting</button>
-      <button onclick="showSection('planes')">Ver Planes</button>
-      <button onclick="showSection('estado')">Ver Mi Hosting</button>
+  <header>
+    <h1>Penta PDF - Herramientas PDF Todo en Uno</h1>
+  </header>
+  <section class="tools">
+    <!-- Comprimir PDF usando PDF.js y pdf-lib -->
+    <div class="tool">
+      <h3>Comprimir PDF</h3>
+      <input type="file" id="compressInput" accept="application/pdf">
+      <button onclick="compressPDF()">Usar</button>
     </div>
 
-    <div class="section" id="info">
-      <h2>Información de Penta Hosting</h2>
-      <p><strong>Propietario:</strong> Primitivo González</p>
-      <p><strong>Ubicación:</strong> México</p>
-      <p>Ofrecemos hosting confiable, accesible y de calidad para todo tipo de usuarios.</p>
+    <!-- Rotar PDF -->
+    <div class="tool">
+      <h3>Rotar PDF</h3>
+      <input type="file" id="rotateInput" accept="application/pdf">
+      <button onclick="rotatePDF()">Usar</button>
     </div>
 
-    <div class="section" id="planes">
-      <h2>Planes Disponibles</h2>
-      <p><strong>Plan Normal – $20 USD/mes</strong></p>
-      <ul>
-        <li>10 GB de almacenamiento SSD</li>
-        <li>100 GB de transferencia mensual</li>
-        <li>1 dominio incluido</li>
-        <li>Soporte 24/7</li>
-      </ul>
-      <p>¡Ideal para sitios personales o pequeños negocios!</p>
-
-      <a href="https://www.hostinger.com/" target="_blank" class="button-link">
-        Ver más planes en Hostinger
-      </a>
+    <!-- Convertir JPG a PDF -->
+    <div class="tool">
+      <h3>JPG a PDF</h3>
+      <input type="file" id="jpgInput" accept="image/jpeg">
+      <button onclick="jpgToPDF()">Usar</button>
     </div>
+  </section>
 
-    <div class="section" id="estado">
-      <h2>Mi Hosting</h2>
-      <p>No tienes ningún plan activo en este momento.</p>
-      <p>Contrata uno desde la sección de planes para ver más información aquí.</p>
-    </div>
-  </div>
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
 
   <script>
-    function enterSite() {
-      document.getElementById("startScreen").style.display = "none";
-      document.getElementById("mainContent").style.display = "block";
+    async function jpgToPDF() {
+      const input = document.getElementById('jpgInput');
+      const file = input.files[0];
+      if (!file) return alert('Selecciona una imagen JPG');
+
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const jpgBytes = new Uint8Array(reader.result);
+        const pdfDoc = await PDFLib.PDFDocument.create();
+        const jpgImage = await pdfDoc.embedJpg(jpgBytes);
+        const page = pdfDoc.addPage([jpgImage.width, jpgImage.height]);
+        page.drawImage(jpgImage, {
+          x: 0,
+          y: 0,
+          width: jpgImage.width,
+          height: jpgImage.height,
+        });
+        const pdfBytes = await pdfDoc.save();
+        download(pdfBytes, 'imagen_convertida.pdf', 'application/pdf');
+      };
+      reader.readAsArrayBuffer(file);
     }
 
-    function showSection(sectionId) {
-      const sections = document.querySelectorAll('.section');
-      sections.forEach(sec => sec.style.display = 'none');
-      document.getElementById(sectionId).style.display = 'block';
+    async function rotatePDF() {
+      const input = document.getElementById('rotateInput');
+      const file = input.files[0];
+      if (!file) return alert('Selecciona un archivo PDF');
+
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const pdfBytes = new Uint8Array(reader.result);
+        const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+        const pages = pdfDoc.getPages();
+        for (const page of pages) {
+          const rotation = page.getRotation().angle + 90;
+          page.setRotation(rotation);
+        }
+        const newPdf = await pdfDoc.save();
+        download(newPdf, 'pdf_rotado.pdf', 'application/pdf');
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function compressPDF() {
+      const input = document.getElementById('compressInput');
+      const file = input.files[0];
+      if (!file) return alert('Selecciona un archivo PDF');
+
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const pdfBytes = new Uint8Array(reader.result);
+        const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+        const newPdf = await pdfDoc.save({ useObjectStreams: false });
+        download(newPdf, 'pdf_comprimido.pdf', 'application/pdf');
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function download(bytes, filename, mime) {
+      const blob = new Blob([bytes], { type: mime });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>
