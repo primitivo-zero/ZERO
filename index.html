@@ -3,1803 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PENTA PDF - Herramientas completas para PDF</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/downloadjs@1.4.7"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Penta Parallax - Una Experiencia Inmersiva</title>
+    <!-- Incluye Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary-color: #6a11cb;
-            --secondary-color: #2575fc;
-            --accent-color: #ff4b2b;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-            --dark-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            --light-gradient: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-        }
-        
-        * {
-            box-sizing: border-box;
+        /* Estilos generales para el cuerpo */
+        body {
+            font-family: 'Inter', sans-serif; /* Fuente moderna */
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden; /* Evita el desplazamiento horizontal */
+            background-color: #f8fafc; /* Fondo suave */
+            color: #333;
+            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces */
         }
-        
-        body {
-            background-color: #f5f7fa;
-            color: var(--dark-color);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Header Styles */
+
+        /* Estilos para el encabezado */
         header {
-            background: var(--dark-gradient);
+            background: linear-gradient(135deg, #4b5563, #1f2937); /* Degradado oscuro */
             color: white;
-            padding: 20px 0;
+            padding: 3rem 0;
             text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra sutil */
         }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(30deg);
-            pointer-events: none;
+
+        header h1 {
+            font-size: 3.5rem; /* Tamaño grande para el título */
+            margin: 0;
+            animation: fadeInDown 1.2s ease-out forwards; /* Animación de entrada */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Sombra en el texto */
         }
-        
-        .logo {
+
+        header p {
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            animation: fadeInUp 1.2s ease-out forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        /* Estilos para la barra de navegación */
+        nav {
+            background-color: #1f2937; /* Color oscuro */
+            padding: 1rem 0;
+            text-align: center;
+            position: sticky; /* Fija la navegación en la parte superior */
+            top: 0;
+            z-index: 1000; /* Asegura que esté sobre otros elementos */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.75rem;
+            border-radius: 9999px; /* Botones redondeados */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+            font-weight: 600; /* Seminegrita */
+        }
+
+        nav a:hover {
+            background-color: #4b5563; /* Cambio de color al pasar el ratón */
+            transform: translateY(-3px); /* Pequeño levantamiento */
+        }
+
+        /* Estilos base para las secciones parallax */
+        .parallax-section {
+            min-height: 80vh; /* Altura mínima para ver el efecto */
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
+            background-attachment: fixed; /* Clave para el efecto parallax */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative; /* Para el contenido dentro */
+            overflow: hidden; /* Asegura que nada se salga */
+            color: white; /* Color de texto predeterminado para el contenido de parallax */
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.6); /* Sombra para mejor legibilidad */
         }
-        
-        .logo-icon {
-            font-size: 2.5rem;
-            margin-right: 15px;
-            color: #fff;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .logo-text {
-            font-size: 2.8rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-top: 10px;
-            font-weight: 300;
-        }
-        
-        /* Main Navigation */
-        .main-nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .nav-tab {
-            padding: 10px 20px;
-            margin: 0 5px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .nav-tab:hover, .nav-tab.active {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        /* Tool Sections */
-        .tool-section {
-            display: none;
-            background-color: white;
-            padding: 30px;
+
+        /* Imágenes de fondo para cada capa parallax */
+        .parallax-layer-1 { background-image: url('https://placehold.co/1600x900/0a0a0a/ffffff?text=PENTA+LAYER+1'); }
+        .parallax-layer-2 { background-image: url('https://placehold.co/1600x900/1e3a8a/ffffff?text=PENTA+LAYER+2'); }
+        .parallax-layer-3 { background-image: url('https://placehold.co/1600x900/065f46/ffffff?text=PENTA+LAYER+3'); }
+        .parallax-layer-4 { background-image: url('https://placehold.co/1600x900/7c2d12/ffffff?text=PENTA+LAYER+4'); }
+        .parallax-layer-5 { background-image: url('https://placehold.co/1600x900/831843/ffffff?text=PENTA+LAYER+5'); }
+
+        /* Contenido dentro de las secciones parallax */
+        .parallax-content {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.4); /* Fondo semitransparente para el texto */
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            animation: fadeIn 0.5s ease;
+            max-width: 800px;
+            animation: scaleIn 1s ease-out forwards; /* Animación de entrada por defecto */
+            opacity: 0; /* Oculto por defecto para la animación JS */
+            transform: scale(0.9); /* Escala pequeña por defecto */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Transición para JS */
         }
-        
-        .tool-section.active {
-            display: block;
+
+        .parallax-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+
+        .parallax-content p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+
+        /* Estilos para las secciones de contenido regular */
+        .regular-section {
+            background-color: white;
+            padding: 4rem 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+            border-bottom: 1px solid #e2e8f0; /* Borde inferior */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .container h2 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .container p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .grid-item {
+            background-color: #f0f4f8;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .grid-item h3 {
+            font-size: 1.75rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .grid-item p {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Estilos para el pie de página */
+        footer {
+            background-color: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 2.5rem 0;
+            margin-top: 0; /* Asegura que no haya espacio extra */
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animaciones Keyframe */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title i {
-            margin-right: 15px;
-            font-size: 1.5rem;
-        }
-        
-        .section-description {
-            margin-bottom: 25px;
-            color: #555;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-        
-        /* Upload Section */
-        .upload-section {
-            border: 2px dashed var(--accent-color);
-            border-radius: 10px;
-            padding: 50px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            background-color: rgba(255, 75, 43, 0.03);
-            position: relative;
-        }
-        
-        .upload-section:hover {
-            background-color: rgba(255, 75, 43, 0.07);
-        }
-        
-        .upload-section.drag-over {
-            background-color: rgba(255, 75, 43, 0.1);
-            border-color: var(--primary-color);
-        }
-        
-        .upload-icon {
-            font-size: 60px;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            opacity: 0.8;
-        }
-        
-        .upload-text {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #555;
-        }
-        
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--dark-gradient);
-            color: white;
-            padding: 12px 28px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(106, 17, 203, 0.3);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .btn-secondary {
-            background: var(--light-color);
-            color: var(--dark-color);
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .btn-secondary:hover {
-            background: #e9ecef;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
-        }
-        
-        .btn-success:hover {
-            box-shadow: 0 8px 15px rgba(40, 167, 69, 0.3);
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, #dc3545, #fd7e14);
-            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
-        }
-        
-        .btn-danger:hover {
-            box-shadow: 0 8px 15px rgba(220, 53, 69, 0.3);
-        }
-        
-        .btn-info {
-            background: linear-gradient(135deg, #17a2b8, #20c997);
-            box-shadow: 0 4px 10px rgba(23, 162, 184, 0.2);
-        }
-        
-        .btn-info:hover {
-            box-shadow: 0 8px 15px rgba(23, 162, 184, 0.3);
-        }
-        
-        /* Options Section */
-        .options-section {
-            margin-bottom: 30px;
-            padding: 25px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .options-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .options-title i {
-            margin-right: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-        
-        select, input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        select:focus, input[type="text"]:focus, input[type="number"]:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
-            outline: none;
-        }
-        
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            background: #ddd;
-            border-radius: 4px;
-            margin-top: 10px;
-            outline: none;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
-            cursor: pointer;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-        }
-        
-        .range-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .range-value {
-            display: inline-block;
-            width: 50px;
-            text-align: center;
-            padding: 5px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .checkbox-group input {
-            margin-right: 10px;
-        }
-        
-        /* Preview Section */
-        .preview-section {
-            margin-top: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .preview-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .preview-item {
-            position: relative;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            background: white;
-        }
-        
-        .preview-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .preview-img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            background-color: #f5f5f5;
-            padding: 15px;
-        }
-        
-        .preview-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-        }
-        
-        .preview-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .preview-btn:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-            transform: scale(1.1);
-        }
-        
-        .preview-info {
-            padding: 15px;
-            background-color: white;
-            border-top: 1px solid #eee;
-        }
-        
-        .preview-filename {
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 5px;
-        }
-        
-        .preview-size {
-            font-size: 0.8rem;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .preview-progress {
-            width: 100%;
-            height: 4px;
-            background: #eee;
-            margin-top: 10px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        /* Actions Section */
-        .actions-section {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-        
-        /* Status Messages */
-        .status-message {
-            text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .status-message i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-        
-        .success {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-color);
-            border: 1px solid rgba(40, 167, 69, 0.2);
-        }
-        
-        .error {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--danger-color);
-            border: 1px solid rgba(220, 53, 69, 0.2);
-        }
-        
-        .info {
-            background-color: rgba(23, 162, 184, 0.1);
-            color: var(--info-color);
-            border: 1px solid rgba(23, 162, 184, 0.2);
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border-top: 3px solid var(--primary-color);
-            text-align: center;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .feature-title {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--dark-color);
-        }
-        
-        .feature-description {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 30px 20px;
-            color: #666;
-            font-size: 0.9rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.02);
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .footer-link:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        
-        .social-link:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-3px);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .preview-container {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .features-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-        
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Clases para animaciones activadas por JavaScript */
+        .animated.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Media queries para responsividad */
         @media (max-width: 768px) {
-            .logo-text {
-                font-size: 2.2rem;
-            }
-            
-            .tagline {
-                font-size: 1rem;
-            }
-            
-            .nav-tab {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-                margin: 5px;
-            }
-            
-            .tool-section {
-                padding: 20px;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .upload-section {
-                padding: 30px 15px;
-            }
-            
-            .upload-icon {
-                font-size: 50px;
-            }
-            
-            .btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
+            header h1 { font-size: 2.5rem; }
+            header p { font-size: 1rem; }
+            nav a { padding: 0.5rem 1rem; margin: 0 0.5rem; font-size: 0.9rem; }
+            .parallax-content h2 { font-size: 2rem; }
+            .parallax-content p { font-size: 1rem; }
+            .container h2 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
         }
-        
-        @media (max-width: 576px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .logo-text {
-                font-size: 1.8rem;
-            }
-            
-            .logo-icon {
-                font-size: 2rem;
-                margin-right: 10px;
-            }
-            
-            .section-title {
-                font-size: 1.3rem;
-            }
-            
-            .preview-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-section {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 2rem; }
+            nav a { margin: 0 0.2rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-file-pdf"></i>
+
+    <header>
+        <h1>Penta Parallax</h1>
+        <p>Una experiencia de desplazamiento inmersiva y dinámica.</p>
+    </header>
+
+    <nav>
+        <a href="#intro">Inicio</a>
+        <a href="#vision">Visión</a>
+        <a href="#mision">Misión</a>
+        <a href="#valores">Valores</a>
+        <a href="#futuro">Futuro</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+
+    <!-- Sección Parallax 1: Introducción -->
+    <section id="intro" class="parallax-section parallax-layer-1">
+        <div class="parallax-content animated">
+            <h2>Bienvenido a Penta Parallax</h2>
+            <p>Descubre una nueva forma de navegar por el contenido. Cada capa te revelará una parte de nuestra historia.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Contenido Regular 1 -->
+    <section class="regular-section">
+        <div class="container">
+            <h2>Explora Nuestra Esencia</h2>
+            <p>En este viaje interactivo, te invitamos a sumergirte en los pilares que nos definen. Desplázate hacia abajo para desvelar cada uno de ellos.</p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>Innovación Constante</h3>
+                    <p>Estamos comprometidos con la búsqueda de soluciones creativas y la implementación de las últimas tecnologías para superar las expectativas.</p>
                 </div>
-                <div class="logo-text">PENTA PDF</div>
-            </div>
-            <div class="tagline">La suite completa de herramientas PDF - Todo lo que necesitas en un solo lugar</div>
-            
-            <div class="main-nav">
-                <div class="nav-tab active" data-tab="convert"><i class="fas fa-exchange-alt"></i> Convertir</div>
-                <div class="nav-tab" data-tab="merge"><i class="fas fa-object-group"></i> Unir PDF</div>
-                <div class="nav-tab" data-tab="split"><i class="fas fa-cut"></i> Dividir PDF</div>
-                <div class="nav-tab" data-tab="compress"><i class="fas fa-compress-alt"></i> Comprimir</div>
-                <div class="nav-tab" data-tab="edit"><i class="fas fa-edit"></i> Editar</div>
-                <div class="nav-tab" data-tab="security"><i class="fas fa-lock"></i> Seguridad</div>
-                <div class="nav-tab" data-tab="organize"><i class="fas fa-layer-group"></i> Organizar</div>
-            </div>
-        </header>
-        
-        <!-- Convert Section -->
-        <section id="convert" class="tool-section active">
-            <h2 class="section-title"><i class="fas fa-exchange-alt"></i> Convertir archivos</h2>
-            <p class="section-description">
-                Convierte fácilmente entre diferentes formatos de archivos. Selecciona el tipo de conversión que necesitas y sube tus archivos.
-                No se requiere instalación - todo se procesa directamente en tu navegador.
-            </p>
-            
-            <div class="options-section">
-                <h3 class="options-title"><i class="fas fa-cog"></i> Opciones de conversión</h3>
-                <div class="form-group">
-                    <label for="conversion-type">Tipo de conversión:</label>
-                    <select id="conversion-type">
-                        <option value="jpg-to-pdf">JPG a PDF</option>
-                        <option value="pdf-to-jpg">PDF a JPG</option>
-                        <option value="word-to-pdf">Word a PDF</option>
-                        <option value="pdf-to-word">PDF a Word</option>
-                        <option value="excel-to-pdf">Excel a PDF</option>
-                        <option value="pdf-to-excel">PDF a Excel</option>
-                        <option value="ppt-to-pdf">PowerPoint a PDF</option>
-                        <option value="pdf-to-ppt">PDF a PowerPoint</option>
-                        <option value="html-to-pdf">HTML a PDF</option>
-                    </select>
+                <div class="grid-item">
+                    <h3>Diseño Centrado en el Usuario</h3>
+                    <p>Cada detalle está pensado para ofrecer una experiencia intuitiva, agradable y eficiente a quienes interactúan con nuestra plataforma.</p>
                 </div>
-                
-                <div id="jpg-to-pdf-options">
-                    <div class="form-group">
-                        <label for="pdf-orientation">Orientación del PDF:</label>
-                        <select id="pdf-orientation">
-                            <option value="portrait">Vertical</option>
-                            <option value="landscape">Horizontal</option>
-                            <option value="auto">Automática (según imagen)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="pdf-margin">Margen (mm):</label>
-                        <div class="range-container">
-                            <input type="range" id="pdf-margin" min="0" max="50" value="10">
-                            <span class="range-value" id="margin-value">10</span>
-                        </div>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="fit-to-page" checked>
-                        <label for="fit-to-page">Ajustar imagen al tamaño de la página</label>
-                    </div>
-                </div>
-                
-                <div id="pdf-to-jpg-options" style="display: none;">
-                    <div class="form-group">
-                        <label for="jpg-quality">Calidad de imagen (1-100):</label>
-                        <div class="range-container">
-                            <input type="range" id="jpg-quality" min="1" max="100" value="85">
-                            <span class="range-value" id="quality-value">85</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="jpg-resolution">Resolución (DPI):</label>
-                        <select id="jpg-resolution">
-                            <option value="72">72 DPI (baja)</option>
-                            <option value="150">150 DPI (media)</option>
-                            <option value="300" selected>300 DPI (alta)</option>
-                            <option value="600">600 DPI (muy alta)</option>
-                        </select>
-                    </div>
+                <div class="grid-item">
+                    <h3>Impacto Sostenible</h3>
+                    <p>Creemos en la creación de valor que no solo beneficie a nuestros usuarios, sino que también contribuya positivamente al entorno y la sociedad.</p>
                 </div>
             </div>
-            
-            <div class="upload-section" id="drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-cloud-upload-alt"></i>
+        </div>
+    </section>
+
+    <!-- Sección Parallax 2: Visión -->
+    <section id="vision" class="parallax-section parallax-layer-2">
+        <div class="parallax-content animated">
+            <h2>Nuestra Visión Futura</h2>
+            <p>Aspiramos a ser líderes en la creación de experiencias digitales que conecten, inspiren y transformen la interacción humana con la tecnología.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Contenido Regular 2 -->
+    <section class="regular-section">
+        <div class="container">
+            <h2>Pilares de Nuestra Visión</h2>
+            <p>Nuestra visión se sustenta en principios clave que guían cada uno de nuestros pasos y decisiones estratégicas.</p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>Acceso Global</h3>
+                    <p>Democratizar el acceso a herramientas y conocimientos avanzados, eliminando barreras geográficas y tecnológicas.</p>
                 </div>
-                <div class="upload-text">Arrastra y suelta tus archivos aquí o haz clic para seleccionarlos</div>
-                <input type="file" id="file-input" multiple style="display: none;">
-                <button class="btn" id="select-files-btn"><i class="fas fa-folder-open"></i> Seleccionar archivos</button>
-                <div class="status-message" id="upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-images"></i> Vista previa</h3>
-                <div class="preview-container" id="preview-container"></div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="convert-btn"><i class="fas fa-file-export"></i> Convertir archivos</button>
-                    <button class="btn btn-danger" id="clear-files-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
+                <div class="grid-item">
+                    <h3>Creatividad Ilimitada</h3>
+                    <p>Fomentar un entorno donde la imaginación y la experimentación no tengan límites, impulsando la innovación en todos los niveles.</p>
                 </div>
-            </div>
-        </section>
-        
-        <!-- Merge PDF Section -->
-        <section id="merge" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-object-group"></i> Unir PDF</h2>
-            <p class="section-description">
-                Combina múltiples archivos PDF en un solo documento. Arrastra para reorganizar el orden de las páginas.
-                ¡Rápido, fácil y seguro!
-            </p>
-            
-            <div class="upload-section" id="merge-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="upload-text">Arrastra y suelta archivos PDF aquí o haz clic para seleccionarlos</div>
-                <input type="file" id="merge-file-input" multiple accept=".pdf" style="display: none;">
-                <button class="btn" id="merge-select-files-btn"><i class="fas fa-folder-open"></i> Seleccionar PDFs</button>
-                <div class="status-message" id="merge-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="merge-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-list-ol"></i> Archivos para unir</h3>
-                <div class="preview-container" id="merge-preview-container"></div>
-                
-                <div class="options-section">
-                    <h3 class="options-title"><i class="fas fa-cog"></i> Opciones para unir</h3>
-                    <div class="form-group">
-                        <label for="merge-output-name">Nombre del archivo resultante:</label>
-                        <input type="text" id="merge-output-name" placeholder="documento-combinado.pdf">
-                    </div>
-                </div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="merge-btn"><i class="fas fa-object-group"></i> Unir PDFs</button>
-                    <button class="btn btn-danger" id="merge-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
+                <div class="grid-item">
+                    <h3>Comunidad Colaborativa</h3>
+                    <p>Construir un ecosistema donde usuarios y creadores puedan colaborar, compartir y crecer juntos.</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Split PDF Section -->
-        <section id="split" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-cut"></i> Dividir PDF</h2>
-            <p class="section-description">
-                Extrae páginas específicas de un PDF o divide cada página en un archivo individual.
-                Perfecto para extraer solo lo que necesitas de documentos largos.
-            </p>
-            
-            <div class="upload-section" id="split-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
+        </div>
+    </section>
+
+    <!-- Sección Parallax 3: Misión -->
+    <section id="mision" class="parallax-section parallax-layer-3">
+        <div class="parallax-content animated">
+            <h2>Nuestra Misión Actual</h2>
+            <p>Desarrollar soluciones digitales de vanguardia que simplifiquen la complejidad, mejoren la productividad y enriquezcan la vida diaria de las personas.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Contenido Regular 3 -->
+    <section class="regular-section">
+        <div class="container">
+            <h2>Cómo Cumplimos Nuestra Misión</h2>
+            <p>Trabajamos incansablemente para llevar a cabo nuestra misión a través de un enfoque dedicado y meticuloso.</p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>Investigación y Desarrollo</h3>
+                    <p>Invertimos en investigación para entender las necesidades emergentes y desarrollar tecnologías que las satisfagan.</p>
                 </div>
-                <div class="upload-text">Arrastra y suelta un archivo PDF aquí o haz clic para seleccionarlo</div>
-                <input type="file" id="split-file-input" accept=".pdf" style="display: none;">
-                <button class="btn" id="split-select-file-btn"><i class="fas fa-folder-open"></i> Seleccionar PDF</button>
-                <div class="status-message" id="split-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="split-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-file-pdf"></i> Archivo para dividir</h3>
-                <div class="preview-container" id="split-preview-container"></div>
-                
-                <div class="options-section">
-                    <h3 class="options-title"><i class="fas fa-cog"></i> Opciones para dividir</h3>
-                    <div class="form-group">
-                        <label>Modo de división:</label>
-                        <div class="checkbox-group">
-                            <input type="radio" id="split-mode-range" name="split-mode" value="range" checked>
-                            <label for="split-mode-range">Extraer rango de páginas</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="split-mode-single" name="split-mode" value="single">
-                            <label for="split-mode-single">Extraer páginas individuales</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="split-mode-all" name="split-mode" value="all">
-                            <label for="split-mode-all">Dividir todas las páginas (un PDF por página)</label>
-                        </div>
-                    </div>
-                    
-                    <div id="split-range-options">
-                        <div class="form-group">
-                            <label for="split-range">Rango de páginas (ej. 1-5, 8, 11-13):</label>
-                            <input type="text" id="split-range" placeholder="1-5, 8, 11-13">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="split-output-prefix">Prefijo para archivos resultantes:</label>
-                        <input type="text" id="split-output-prefix" placeholder="pagina">
-                    </div>
+                <div class="grid-item">
+                    <h3>Excelencia Operativa</h3>
+                    <p>Optimizamos nuestros procesos para asegurar la entrega de productos y servicios de la más alta calidad.</p>
                 </div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="split-btn"><i class="fas fa-cut"></i> Dividir PDF</button>
-                    <button class="btn btn-danger" id="split-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
+                <div class="grid-item">
+                    <h3>Soporte Excepcional</h3>
+                    <p>Ofrecemos un soporte robusto y accesible para garantizar que nuestros usuarios aprovechen al máximo nuestras soluciones.</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Compress PDF Section -->
-        <section id="compress" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-compress-alt"></i> Comprimir PDF</h2>
-            <p class="section-description">
-                Reduce el tamaño de tus archivos PDF sin perder calidad visible. Perfecto para compartir por correo o subir a la web.
-                ¡Optimiza tus documentos en segundos!
-            </p>
-            
-            <div class="upload-section" id="compress-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
+        </div>
+    </section>
+
+    <!-- Sección Parallax 4: Valores -->
+    <section id="valores" class="parallax-section parallax-layer-4">
+        <div class="parallax-content animated">
+            <h2>Nuestros Valores Fundamentales</h2>
+            <p>La integridad, la pasión y la colaboración son los cimientos sobre los que construimos todas nuestras interacciones y proyectos.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Contenido Regular 4 -->
+    <section class="regular-section">
+        <div class="container">
+            <h2>Principios que Nos Guían</h2>
+            <p>Nuestros valores son el alma de nuestra organización, reflejándose en cada decisión y en cada interacción.</p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>Integridad</h3>
+                    <p>Actuamos con honestidad, transparencia y ética en todas nuestras operaciones y relaciones.</p>
                 </div>
-                <div class="upload-text">Arrastra y suelta un archivo PDF aquí o haz clic para seleccionarlo</div>
-                <input type="file" id="compress-file-input" accept=".pdf" style="display: none;">
-                <button class="btn" id="compress-select-file-btn"><i class="fas fa-folder-open"></i> Seleccionar PDF</button>
-                <div class="status-message" id="compress-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="compress-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-file-pdf"></i> Archivo para comprimir</h3>
-                <div class="preview-container" id="compress-preview-container"></div>
-                
-                <div class="options-section">
-                    <h3 class="options-title"><i class="fas fa-cog"></i> Nivel de compresión</h3>
-                    <div class="form-group">
-                        <div class="checkbox-group">
-                            <input type="radio" id="compression-low" name="compression-level" value="low" checked>
-                            <label for="compression-low">Baja compresión (calidad máxima)</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="compression-medium" name="compression-level" value="medium">
-                            <label for="compression-medium">Compresión media (recomendado)</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="compression-high" name="compression-level" value="high">
-                            <label for="compression-high">Alta compresión (tamaño mínimo)</label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="compress-output-name">Nombre del archivo comprimido:</label>
-                        <input type="text" id="compress-output-name" placeholder="documento-comprimido.pdf">
-                    </div>
+                <div class="grid-item">
+                    <h3>Pasión</h3>
+                    <p>Abrazamos cada desafío con entusiasmo y dedicación, buscando siempre la excelencia en lo que hacemos.</p>
                 </div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="compress-btn"><i class="fas fa-compress-alt"></i> Comprimir PDF</button>
-                    <button class="btn btn-danger" id="compress-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
+                <div class="grid-item">
+                    <h3>Colaboración</h3>
+                    <p>Fomentamos el trabajo en equipo y la sinergia, reconociendo que los mejores resultados nacen de la diversidad de ideas.</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Edit PDF Section -->
-        <section id="edit" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-edit"></i> Editar PDF</h2>
-            <p class="section-description">
-                Edita tus PDFs directamente en el navegador. Añade texto, imágenes, formas o anotaciones.
-                Rotar páginas, añadir marcas de agua y más - todo sin instalar software.
-            </p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-font"></i>
-                    </div>
-                    <h3 class="feature-title">Añadir Texto</h3>
-                    <p class="feature-description">
-                        Inserta texto en cualquier parte del documento. Cambia fuente, tamaño, color y estilo.
-                    </p>
+        </div>
+    </section>
+
+    <!-- Sección Parallax 5: Futuro -->
+    <section id="futuro" class="parallax-section parallax-layer-5">
+        <div class="parallax-content animated">
+            <h2>El Futuro con Penta Parallax</h2>
+            <p>Continuaremos innovando y explorando nuevas fronteras para ofrecer experiencias que inspiren y empoderen a nuestros usuarios.</p>
+        </div>
+    </section>
+
+    <!-- Sección de Contenido Regular 5 -->
+    <section class="regular-section" id="contacto">
+        <div class="container">
+            <h2>Únete a Nuestro Viaje</h2>
+            <p>Estamos siempre abiertos a nuevas ideas y colaboraciones. ¡Contacta con nosotros para empezar a crear el futuro!</p>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>Envíanos un Correo</h3>
+                    <p>info@pentaparallax.com</p>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <h3 class="feature-title">Añadir Imágenes</h3>
-                    <p class="feature-description">
-                        Inserta imágenes en tu PDF. Redimensiona, rota y coloca exactamente donde necesites.
-                    </p>
+                <div class="grid-item">
+                    <h3>Llámanos</h3>
+                    <p>+XX XXX XXX XXXX</p>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h3 class="feature-title">Marca de Agua</h3>
-                    <p class="feature-description">
-                        Añade marcas de agua de texto o imagen. Controla opacidad, posición y rotación.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rotate-right"></i>
-                    </div>
-                    <h3 class="feature-title">Rotar Páginas</h3>
-                    <p class="feature-description">
-                        Rota páginas individuales o todo el documento 90°, 180° o 270°.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-crop"></i>
-                    </div>
-                    <h3 class="feature-title">Recortar PDF</h3>
-                    <p class="feature-description">
-                        Elimina márgenes o selecciona un área específica para conservar.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-signature"></i>
-                    </div>
-                    <h3 class="feature-title">Firmar PDF</h3>
-                    <p class="feature-description">
-                        Añade tu firma digital o solicita firmas electrónicas de otros.
-                    </p>
+                <div class="grid-item">
+                    <h3>Nuestras Redes</h3>
+                    <p>Síguenos en redes sociales para estar al día de las últimas novedades.</p>
                 </div>
             </div>
-            
-            <div class="upload-section" id="edit-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="upload-text">Arrastra y suelta un archivo PDF aquí o haz clic para seleccionarlo</div>
-                <input type="file" id="edit-file-input" accept=".pdf" style="display: none;">
-                <button class="btn" id="edit-select-file-btn"><i class="fas fa-folder-open"></i> Seleccionar PDF</button>
-                <div class="status-message" id="edit-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="edit-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-file-pdf"></i> Archivo para editar</h3>
-                <div class="preview-container" id="edit-preview-container"></div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-info" id="edit-btn"><i class="fas fa-edit"></i> Abrir Editor</button>
-                    <button class="btn btn-danger" id="edit-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Security Section -->
-        <section id="security" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-lock"></i> Seguridad PDF</h2>
-            <p class="section-description">
-                Protege tus documentos PDF con contraseña o elimina restricciones de archivos bloqueados.
-                Controla quién puede ver, editar o imprimir tus documentos confidenciales.
-            </p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <h3 class="feature-title">Proteger PDF</h3>
-                    <p class="feature-description">
-                        Añade contraseña para abrir el documento o restricciones para imprimir/editar.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-unlock"></i>
-                    </div>
-                    <h3 class="feature-title">Desbloquear PDF</h3>
-                    <p class="feature-description">
-                        Elimina contraseñas y restricciones de documentos protegidos (solo para archivos con permiso).
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-eye-slash"></i>
-                    </div>
-                    <h3 class="feature-title">Censurar PDF</h3>
-                    <p class="feature-description">
-                        Elimina permanentemente información sensible con herramientas de redacción segura.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="upload-section" id="security-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="upload-text">Arrastra y suelta un archivo PDF aquí o haz clic para seleccionarlo</div>
-                <input type="file" id="security-file-input" accept=".pdf" style="display: none;">
-                <button class="btn" id="security-select-file-btn"><i class="fas fa-folder-open"></i> Seleccionar PDF</button>
-                <div class="status-message" id="security-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="security-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-file-pdf"></i> Archivo para proteger/desbloquear</h3>
-                <div class="preview-container" id="security-preview-container"></div>
-                
-                <div class="options-section">
-                    <h3 class="options-title"><i class="fas fa-cog"></i> Opciones de seguridad</h3>
-                    <div class="form-group">
-                        <label>Acción:</label>
-                        <div class="checkbox-group">
-                            <input type="radio" id="security-protect" name="security-action" value="protect" checked>
-                            <label for="security-protect">Proteger PDF</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="security-unlock" name="security-action" value="unlock">
-                            <label for="security-unlock">Desbloquear PDF</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="security-redact" name="security-action" value="redact">
-                            <label for="security-redact">Censurar información</label>
-                        </div>
-                    </div>
-                    
-                    <div id="protect-options">
-                        <div class="form-group">
-                            <label for="open-password">Contraseña para abrir (opcional):</label>
-                            <input type="text" id="open-password" placeholder="Dejar vacío para no requerir contraseña">
-                        </div>
-                        <div class="form-group">
-                            <label for="permission-password">Contraseña para permisos (opcional):</label>
-                            <input type="text" id="permission-password" placeholder="Dejar vacío para no restringir permisos">
-                        </div>
-                        <div class="form-group">
-                            <label>Restricciones (requiere contraseña de permisos):</label>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="allow-printing">
-                                <label for="allow-printing">Permitir impresión</label>
-                            </div>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="allow-modification">
-                                <label for="allow-modification">Permitir modificación</label>
-                            </div>
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="allow-copy" checked>
-                                <label for="allow-copy">Permitir copiar texto/imágenes</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="unlock-options" style="display: none;">
-                        <div class="form-group">
-                            <label for="unlock-password">Contraseña del PDF (si está protegido):</label>
-                            <input type="text" id="unlock-password" placeholder="Introduce la contraseña si el PDF está protegido">
-                        </div>
-                        <div class="status-message info">
-                            <i class="fas fa-info-circle"></i> Solo puedes desbloquear PDFs para los que tengas permiso.
-                        </div>
-                    </div>
-                    
-                    <div id="redact-options" style="display: none;">
-                        <div class="form-group">
-                            <label for="redact-text">Texto a censurar (separado por comas):</label>
-                            <input type="text" id="redact-text" placeholder="Ej: confidencial, secreto, interno">
-                        </div>
-                        <div class="form-group">
-                            <label for="redact-color">Color de censura:</label>
-                            <input type="color" id="redact-color" value="#000000">
-                        </div>
-                        <div class="status-message info">
-                            <i class="fas fa-info-circle"></i> La censura es permanente. Guarda una copia del original.
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="security-output-name">Nombre del archivo resultante:</label>
-                        <input type="text" id="security-output-name" placeholder="documento-seguro.pdf">
-                    </div>
-                </div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="security-btn"><i class="fas fa-lock"></i> Aplicar seguridad</button>
-                    <button class="btn btn-danger" id="security-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Organize PDF Section -->
-        <section id="organize" class="tool-section">
-            <h2 class="section-title"><i class="fas fa-layer-group"></i> Organizar PDF</h2>
-            <p class="section-description">
-                Reorganiza, elimina o añade páginas a tus documentos PDF. Numera páginas, convierte a PDF/A para archivo
-                a largo plazo o repara documentos dañados.
-            </p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-sort-numeric-down"></i>
-                    </div>
-                    <h3 class="feature-title">Numerar Páginas</h3>
-                    <p class="feature-description">
-                        Añade números de página con diferentes formatos, fuentes y posiciones.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-archive"></i>
-                    </div>
-                    <h3 class="feature-title">PDF/A para Archivo</h3>
-                    <p class="feature-description">
-                        Convierte a PDF/A, el estándar ISO para preservación a largo plazo.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-band-aid"></i>
-                    </div>
-                    <h3 class="feature-title">Reparar PDF</h3>
-                    <p class="feature-description">
-                        Intenta recuperar archivos PDF dañados o corruptos.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-medical"></i>
-                    </div>
-                    <h3 class="feature-title">OCR PDF</h3>
-                    <p class="feature-description">
-                        Convierte PDF escaneados en documentos con texto seleccionable y buscable.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 class="feature-title">Comparar PDF</h3>
-                    <p class="feature-description">
-                        Encuentra diferencias entre dos versiones del mismo documento.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="upload-section" id="organize-drop-area">
-                <div class="upload-icon">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="upload-text">Arrastra y suelta un archivo PDF aquí o haz clic para seleccionarlo</div>
-                <input type="file" id="organize-file-input" accept=".pdf" style="display: none;">
-                <button class="btn" id="organize-select-file-btn"><i class="fas fa-folder-open"></i> Seleccionar PDF</button>
-                <div class="status-message" id="organize-upload-status" style="display: none;"></div>
-            </div>
-            
-            <div class="preview-section" id="organize-preview-section" style="display: none;">
-                <h3 class="preview-title"><i class="fas fa-file-pdf"></i> Archivo para organizar</h3>
-                <div class="preview-container" id="organize-preview-container"></div>
-                
-                <div class="options-section">
-                    <h3 class="options-title"><i class="fas fa-cog"></i> Opciones de organización</h3>
-                    <div class="form-group">
-                        <label>Acción:</label>
-                        <div class="checkbox-group">
-                            <input type="radio" id="organize-pagenumbers" name="organize-action" value="pagenumbers" checked>
-                            <label for="organize-pagenumbers">Añadir números de página</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="organize-pdfa" name="organize-action" value="pdfa">
-                            <label for="organize-pdfa">Convertir a PDF/A</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="organize-repair" name="organize-action" value="repair">
-                            <label for="organize-repair">Reparar PDF</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="organize-ocr" name="organize-action" value="ocr">
-                            <label for="organize-ocr">OCR (Reconocimiento de texto)</label>
-                        </div>
-                    </div>
-                    
-                    <div id="pagenumbers-options">
-                        <div class="form-group">
-                            <label for="page-number-position">Posición de los números:</label>
-                            <select id="page-number-position">
-                                <option value="bottom-center">Inferior centro</option>
-                                <option value="bottom-right">Inferior derecha</option>
-                                <option value="bottom-left">Inferior izquierda</option>
-                                <option value="top-center">Superior centro</option>
-                                <option value="top-right">Superior derecha</option>
-                                <option value="top-left">Superior izquierda</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="page-number-format">Formato:</label>
-                            <select id="page-number-format">
-                                <option value="1">1, 2, 3...</option>
-                                <option value="i">i, ii, iii...</option>
-                                <option value="I">I, II, III...</option>
-                                <option value="a">a, b, c...</option>
-                                <option value="A">A, B, C...</option>
-                                <option value="custom">Personalizado</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="custom-format-group" style="display: none;">
-                            <label for="custom-page-format">Formato personalizado (usa {n} para el número):</label>
-                            <input type="text" id="custom-page-format" placeholder="Página {n}">
-                        </div>
-                        <div class="form-group">
-                            <label for="page-number-font">Fuente:</label>
-                            <select id="page-number-font">
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="Times-Roman">Times New Roman</option>
-                                <option value="Courier">Courier</option>
-                                <option value="Arial">Arial</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="page-number-size">Tamaño de fuente:</label>
-                            <div class="range-container">
-                                <input type="range" id="page-number-size" min="8" max="36" value="12">
-                                <span class="range-value" id="page-number-size-value">12</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="ocr-options" style="display: none;">
-                        <div class="form-group">
-                            <label for="ocr-language">Idioma del texto:</label>
-                            <select id="ocr-language">
-                                <option value="spa">Español</option>
-                                <option value="eng">Inglés</option>
-                                <option value="fra">Francés</option>
-                                <option value="deu">Alemán</option>
-                                <option value="ita">Italiano</option>
-                                <option value="por">Portugués</option>
-                            </select>
-                        </div>
-                        <div class="status-message info">
-                            <i class="fas fa-info-circle"></i> El OCR puede llevar varios minutos dependiendo del tamaño del documento.
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="organize-output-name">Nombre del archivo resultante:</label>
-                        <input type="text" id="organize-output-name" placeholder="documento-organizado.pdf">
-                    </div>
-                </div>
-                
-                <div class="actions-section">
-                    <button class="btn btn-success" id="organize-btn"><i class="fas fa-check-circle"></i> Aplicar cambios</button>
-                    <button class="btn btn-danger" id="organize-clear-btn"><i class="fas fa-trash-alt"></i> Limpiar todo</button>
-                </div>
-            </div>
-        </section>
-        
-        <footer>
-            <div class="footer-links">
-                <a href="#" class="footer-link">Términos de servicio</a>
-                <a href="#" class="footer-link">Política de privacidad</a>
-                <a href="#" class="footer-link">Contacto</a>
-                <a href="#" class="footer-link">Soporte</a>
-                <a href="#" class="footer-link">Acerca de</a>
-            </div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-            </div>
-            
-            <p>&copy; 2023 PENTA PDF. Todos los derechos reservados.</p>
-            <p>Desarrollado con <i class="fas fa-heart" style="color: #ff4b2b;"></i> para amantes de los PDF</p>
-        </footer>
-    </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Penta Parallax. Todos los derechos reservados.</p>
+    </footer>
 
     <script>
-        // Global variables
-        let currentFiles = [];
-        let currentTab = 'convert';
-        
-        // DOM Elements
-        const tabElements = document.querySelectorAll('.nav-tab');
-        const toolSections = document.querySelectorAll('.tool-section');
-        const conversionType = document.getElementById('conversion-type');
-        const jpgToPdfOptions = document.getElementById('jpg-to-pdf-options');
-        const pdfToJpgOptions = document.getElementById('pdf-to-jpg-options');
-        const marginSlider = document.getElementById('pdf-margin');
-        const marginValue = document.getElementById('margin-value');
-        const qualitySlider = document.getElementById('jpg-quality');
-        const qualityValue = document.getElementById('quality-value');
-        const fileInput = document.getElementById('file-input');
-        const selectFilesBtn = document.getElementById('select-files-btn');
-        const dropArea = document.getElementById('drop-area');
-        const previewSection = document.getElementById('preview-section');
-        const previewContainer = document.getElementById('preview-container');
-        const convertBtn = document.getElementById('convert-btn');
-        const clearFilesBtn = document.getElementById('clear-files-btn');
-        const uploadStatus = document.getElementById('upload-status');
-        
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', initApp);
-        
-        function initApp() {
-            // Tab navigation
-            tabElements.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabId = tab.getAttribute('data-tab');
-                    switchTab(tabId);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Selecciona todas las secciones parallax y de contenido regular
+            const sections = document.querySelectorAll('.parallax-content, .regular-section h2, .regular-section p, .grid-item');
+
+            // Opciones para Intersection Observer
+            const observerOptions = {
+                root: null, // Observa el viewport
+                rootMargin: '0px',
+                threshold: 0.2 // Cuando el 20% del elemento es visible
+            };
+
+            // Callback que se ejecuta cuando un elemento entra/sale del viewport
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Si el elemento está visible, añade la clase para animar
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Opcional: Si quieres que la animación se reinicie al salir, descomenta la siguiente línea
+                        // entry.target.classList.remove('is-visible');
+                    }
                 });
+            };
+
+            // Crea una nueva instancia de Intersection Observer
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            // Observa cada sección
+            sections.forEach(section => {
+                observer.observe(section);
             });
-            
-            // Conversion type change
-            conversionType.addEventListener('change', toggleConversionOptions);
-            
-            // Margin slider
-            marginSlider.addEventListener('input', () => {
-                marginValue.textContent = marginSlider.value;
-            });
-            
-            // Quality slider
-            qualitySlider.addEventListener('input', () => {
-                qualityValue.textContent = qualitySlider.value;
-            });
-            
-            // File selection
-            selectFilesBtn.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', handleFileSelection);
-            
-            // Drag and drop
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false);
-            });
-            
-            dropArea.addEventListener('drop', handleDrop, false);
-            
-            // Buttons
-            convertBtn.addEventListener('click', convertFiles);
-            clearFilesBtn.addEventListener('click', clearFiles);
-        }
-        
-        function switchTab(tabId) {
-            // Update active tab
-            tabElements.forEach(tab => {
-                if (tab.getAttribute('data-tab') === tabId) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-            
-            // Show corresponding section
-            toolSections.forEach(section => {
-                if (section.id === tabId) {
-                    section.classList.add('active');
-                } else {
-                    section.classList.remove('active');
-                }
-            });
-            
-            currentTab = tabId;
-            clearFiles();
-        }
-        
-        function toggleConversionOptions() {
-            const selectedOption = conversionType.value;
-            
-            if (selectedOption === 'jpg-to-pdf') {
-                jpgToPdfOptions.style.display = 'block';
-                pdfToJpgOptions.style.display = 'none';
-            } else if (selectedOption === 'pdf-to-jpg') {
-                jpgToPdfOptions.style.display = 'none';
-                pdfToJpgOptions.style.display = 'block';
-            } else {
-                jpgToPdfOptions.style.display = 'none';
-                pdfToJpgOptions.style.display = 'none';
-            }
-        }
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        function highlight() {
-            dropArea.classList.add('drag-over');
-        }
-        
-        function unhighlight() {
-            dropArea.classList.remove('drag-over');
-        }
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-        
-        function handleFileSelection(e) {
-            const files = e.target.files;
-            handleFiles(files);
-        }
-        
-        function handleFiles(files) {
-            if (!files || files.length === 0) return;
-            
-            // Clear previous files
-            currentFiles = [];
-            
-            // Process each file
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                
-                // Check file type based on current tool
-                if (currentTab === 'convert') {
-                    const conversion = conversionType.value;
-                    
-                    if (conversion.includes('jpg') && !file.type.match('image.*')) {
-                        showStatus('error', 'Solo se permiten archivos de imagen para esta conversión');
-                        return;
-                    }
-                    
-                    if (conversion.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
-                        showStatus('error', 'Solo se permiten archivos PDF para esta conversión');
-                        return;
-                    }
-                    
-                    if (conversion.includes('word') && !file.name.toLowerCase().match(/\.(doc|docx)$/)) {
-                        showStatus('error', 'Solo se permiten archivos Word (DOC/DOCX) para esta conversión');
-                        return;
-                    }
-                    
-                    if (conversion.includes('excel') && !file.name.toLowerCase().match(/\.(xls|xlsx)$/)) {
-                        showStatus('error', 'Solo se permiten archivos Excel (XLS/XLSX) para esta conversión');
-                        return;
-                    }
-                    
-                    if (conversion.includes('ppt') && !file.name.toLowerCase().match(/\.(ppt|pptx)$/)) {
-                        showStatus('error', 'Solo se permiten archivos PowerPoint (PPT/PPTX) para esta conversión');
-                        return;
-                    }
-                    
-                    if (conversion === 'html-to-pdf' && !file.name.toLowerCase().endsWith('.html')) {
-                        showStatus('error', 'Solo se permiten archivos HTML para esta conversión');
-                        return;
-                    }
-                } else if (currentTab === 'merge' || currentTab === 'split' || currentTab === 'compress' || 
-                           currentTab === 'edit' || currentTab === 'security' || currentTab === 'organize') {
-                    if (!file.name.toLowerCase().endsWith('.pdf')) {
-                        showStatus('error', 'Solo se permiten archivos PDF para esta herramienta');
-                        return;
-                    }
-                }
-                
-                currentFiles.push(file);
-            }
-            
-            // Show preview
-            showPreview();
-        }
-        
-        function showPreview() {
-            if (currentFiles.length === 0) {
-                previewSection.style.display = 'none';
-                return;
-            }
-            
-            previewContainer.innerHTML = '';
-            
-            currentFiles.forEach((file, index) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                
-                const previewImg = document.createElement('img');
-                previewImg.className = 'preview-img';
-                previewImg.alt = file.name;
-                
-                const previewActions = document.createElement('div');
-                previewActions.className = 'preview-actions';
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'preview-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                deleteBtn.addEventListener('click', () => removeFile(index));
-                
-                previewActions.appendChild(deleteBtn);
-                
-                const previewInfo = document.createElement('div');
-                previewInfo.className = 'preview-info';
-                
-                const previewFilename = document.createElement('div');
-                previewFilename.className = 'preview-filename';
-                previewFilename.textContent = file.name;
-                
-                const previewSize = document.createElement('div');
-                previewSize.className = 'preview-size';
-                previewSize.textContent = formatFileSize(file.size);
-                
-                previewInfo.appendChild(previewFilename);
-                previewInfo.appendChild(previewSize);
-                
-                previewItem.appendChild(previewImg);
-                previewItem.appendChild(previewActions);
-                previewItem.appendChild(previewInfo);
-                
-                // Create thumbnail or icon based on file type
-                if (file.type.match('image.*')) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        previewImg.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                } else if (file.name.toLowerCase().endsWith('.pdf')) {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/337/337946.png';
-                } else if (file.name.toLowerCase().endsWith('.doc') || file.name.toLowerCase().endsWith('.docx')) {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/281/281760.png';
-                } else if (file.name.toLowerCase().endsWith('.xls') || file.name.toLowerCase().endsWith('.xlsx')) {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/732/732220.png';
-                } else if (file.name.toLowerCase().endsWith('.ppt') || file.name.toLowerCase().endsWith('.pptx')) {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/281/281769.png';
-                } else if (file.name.toLowerCase().endsWith('.html')) {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/732/732212.png';
-                } else {
-                    previewImg.src = 'https://cdn-icons-png.flaticon.com/512/136/136528.png';
-                }
-                
-                previewContainer.appendChild(previewItem);
-            });
-            
-            previewSection.style.display = 'block';
-            showStatus('success', `${currentFiles.length} archivo(s) listo(s) para procesar`);
-        }
-        
-        function removeFile(index) {
-            currentFiles.splice(index, 1);
-            showPreview();
-        }
-        
-        function clearFiles() {
-            currentFiles = [];
-            fileInput.value = '';
-            previewSection.style.display = 'none';
-            uploadStatus.style.display = 'none';
-        }
-        
-        function showStatus(type, message) {
-            uploadStatus.className = 'status-message ' + type;
-            uploadStatus.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-            uploadStatus.style.display = 'block';
-        }
-        
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        async function convertFiles() {
-            if (currentFiles.length === 0) {
-                showStatus('error', 'No hay archivos para convertir');
-                return;
-            }
-            
-            const conversion = conversionType.value;
-            
-            try {
-                convertBtn.disabled = true;
-                convertBtn.innerHTML = '<i class="fas fa-spinner loading"></i> Procesando...';
-                
-                if (conversion === 'jpg-to-pdf') {
-                    await convertJpgToPdf();
-                } else if (conversion === 'pdf-to-jpg') {
-                    await convertPdfToJpg();
-                } else {
-                    showStatus('error', 'Conversión no implementada aún');
-                }
-            } catch (error) {
-                console.error('Error durante la conversión:', error);
-                showStatus('error', 'Error durante la conversión: ' + error.message);
-            } finally {
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-file-export"></i> Convertir archivos';
-            }
-        }
-        
-        async function convertJpgToPdf() {
-            const { jsPDF } = window.jspdf;
-            const orientation = document.getElementById('pdf-orientation').value;
-            const margin = parseInt(document.getElementById('pdf-margin').value);
-            const fitToPage = document.getElementById('fit-to-page').checked;
-            
-            const doc = new jsPDF({
-                orientation: orientation === 'landscape' ? 'landscape' : 'portrait',
-                unit: 'mm'
-            });
-            
-            // Process each image
-            for (let i = 0; i < currentFiles.length; i++) {
-                const file = currentFiles[i];
-                
-                if (i > 0) {
-                    doc.addPage();
-                }
-                
-                const imgData = await readFileAsDataURL(file);
-                const img = new Image();
-                
-                await new Promise((resolve) => {
-                    img.onload = resolve;
-                    img.src = imgData;
-                });
-                
-                // Calculate dimensions
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-                
-                let imgWidth = img.width;
-                let imgHeight = img.height;
-                
-                // Convert pixels to mm (assuming 96 DPI)
-                const pxToMm = 25.4 / 96;
-                imgWidth *= pxToMm;
-                imgHeight *= pxToMm;
-                
-                // Fit to page if needed
-                if (fitToPage) {
-                    const ratio = Math.min(
-                        (pageWidth - margin * 2) / imgWidth,
-                        (pageHeight - margin * 2) / imgHeight
-                    );
-                    imgWidth *= ratio;
-                    imgHeight *= ratio;
-                }
-                
-                // Center the image
-                const x = (pageWidth - imgWidth) / 2;
-                const y = (pageHeight - imgHeight) / 2;
-                
-                doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
-            }
-            
-            // Save the PDF
-            doc.save('documento-convertido.pdf');
-            showStatus('success', 'Conversión completada con éxito');
-        }
-        
-        async function convertPdfToJpg() {
-            showStatus('error', 'La conversión de PDF a JPG no está implementada en este ejemplo');
-            // En una implementación real, usarías una biblioteca como pdf-lib o pdf.js
-            // para extraer las páginas del PDF y convertirlas a imágenes canvas
-        }
-        
-        function readFileAsDataURL(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        // Initialize the app
-        toggleConversionOptions();
+        });
     </script>
 </body>
 </html>
