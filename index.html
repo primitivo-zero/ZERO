@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penta Parallax - Una Experiencia Inmersiva</title>
+    <title>Aventura Interactiva: El Orbe de Lumina</title>
     <!-- Incluye Tailwind CSS para un diseño moderno y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -13,420 +13,534 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden; /* Evita el desplazamiento horizontal */
-            background-color: #f8fafc; /* Fondo suave */
-            color: #333;
-            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces */
-        }
-
-        /* Estilos para el encabezado */
-        header {
-            background: linear-gradient(135deg, #4b5563, #1f2937); /* Degradado oscuro */
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-        }
-
-        header h1 {
-            font-size: 3.5rem; /* Tamaño grande para el título */
-            margin: 0;
-            animation: fadeInDown 1.2s ease-out forwards; /* Animación de entrada */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Sombra en el texto */
-        }
-
-        header p {
-            font-size: 1.25rem;
-            margin-top: 1rem;
-            animation: fadeInUp 1.2s ease-out forwards;
-            animation-delay: 0.3s;
-            opacity: 0;
-        }
-
-        /* Estilos para la barra de navegación */
-        nav {
-            background-color: #1f2937; /* Color oscuro */
-            padding: 1rem 0;
-            text-align: center;
-            position: sticky; /* Fija la navegación en la parte superior */
-            top: 0;
-            z-index: 1000; /* Asegura que esté sobre otros elementos */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            margin: 0 0.75rem;
-            border-radius: 9999px; /* Botones redondeados */
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
-            font-weight: 600; /* Seminegrita */
-        }
-
-        nav a:hover {
-            background-color: #4b5563; /* Cambio de color al pasar el ratón */
-            transform: translateY(-3px); /* Pequeño levantamiento */
-        }
-
-        /* Estilos base para las secciones parallax */
-        .parallax-section {
-            min-height: 80vh; /* Altura mínima para ver el efecto */
+            background-color: #1a202c; /* Fondo oscuro, ideal para aventura */
+            color: #e2e8f0; /* Texto claro */
             display: flex;
-            align-items: center;
             justify-content: center;
-            background-attachment: fixed; /* Clave para el efecto parallax */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative; /* Para el contenido dentro */
-            overflow: hidden; /* Asegura que nada se salga */
-            color: white; /* Color de texto predeterminado para el contenido de parallax */
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.6); /* Sombra para mejor legibilidad */
-        }
-
-        /* Imágenes de fondo para cada capa parallax */
-        .parallax-layer-1 { background-image: url('https://placehold.co/1600x900/0a0a0a/ffffff?text=PENTA+LAYER+1'); }
-        .parallax-layer-2 { background-image: url('https://placehold.co/1600x900/1e3a8a/ffffff?text=PENTA+LAYER+2'); }
-        .parallax-layer-3 { background-image: url('https://placehold.co/1600x900/065f46/ffffff?text=PENTA+LAYER+3'); }
-        .parallax-layer-4 { background-image: url('https://placehold.co/1600x900/7c2d12/ffffff?text=PENTA+LAYER+4'); }
-        .parallax-layer-5 { background-image: url('https://placehold.co/1600x900/831843/ffffff?text=PENTA+LAYER+5'); }
-
-        /* Contenido dentro de las secciones parallax */
-        .parallax-content {
-            text-align: center;
-            padding: 2rem;
-            background-color: rgba(0, 0, 0, 0.4); /* Fondo semitransparente para el texto */
-            border-radius: 10px;
-            max-width: 800px;
-            animation: scaleIn 1s ease-out forwards; /* Animación de entrada por defecto */
-            opacity: 0; /* Oculto por defecto para la animación JS */
-            transform: scale(0.9); /* Escala pequeña por defecto */
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Transición para JS */
-        }
-
-        .parallax-content h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .parallax-content p {
-            font-size: 1.25rem;
+            align-items: center;
+            min-height: 100vh; /* Ocupa al menos toda la altura de la vista */
             line-height: 1.6;
         }
 
-        /* Estilos para las secciones de contenido regular */
-        .regular-section {
-            background-color: white;
-            padding: 4rem 0;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* Sombra ligera */
-            border-bottom: 1px solid #e2e8f0; /* Borde inferior */
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 0 auto;
+        /* Contenedor principal de la aventura */
+        .adventure-container {
+            background-color: #2d3748; /* Un tono más claro que el fondo del body */
+            border-radius: 1rem; /* Esquinas redondeadas */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Sombra profunda */
+            padding: 2.5rem;
+            max-width: 900px;
+            width: 95%; /* Ancho responsivo */
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Espacio entre elementos */
+            border: 2px solid #4a5568; /* Borde sutil */
         }
 
-        .container h2 {
-            font-size: 2.5rem;
-            color: #1f2937;
+        /* Estilos del título de la aventura */
+        .adventure-title {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #a0aec0; /* Un gris azulado */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
             margin-bottom: 1.5rem;
         }
 
-        .container p {
-            font-size: 1.15rem;
+        /* Área de texto de la historia */
+        #story-text {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            min-height: 150px; /* Asegura un espacio mínimo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a202c; /* Fondo para el texto */
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-align: left; /* Alineación de texto para lectura */
+            border: 1px solid #4a5568;
             line-height: 1.8;
-            color: #4a5568;
-            margin-bottom: 1rem;
+            opacity: 0; /* Para animación de aparición */
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2.5rem;
-        }
-
-        .grid-item {
-            background-color: #f0f4f8;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: left;
-        }
-
-        .grid-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .grid-item h3 {
-            font-size: 1.75rem;
-            color: #1f2937;
-            margin-bottom: 1rem;
-        }
-
-        .grid-item p {
-            font-size: 1rem;
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        /* Estilos para el pie de página */
-        footer {
-            background-color: #1f2937;
-            color: white;
-            text-align: center;
-            padding: 2.5rem 0;
-            margin-top: 0; /* Asegura que no haya espacio extra */
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Animaciones Keyframe */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Clases para animaciones activadas por JavaScript */
-        .animated.is-visible {
+        #story-text.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        /* Media queries para responsividad */
+        /* Contenedor de opciones */
+        #choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* Espacio entre botones */
+            margin-top: 1.5rem;
+        }
+
+        /* Botones de opción */
+        .choice-button {
+            background-color: #4c51bf; /* Azul índigo */
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .choice-button:hover {
+            background-color: #667eea; /* Azul más claro al pasar el ratón */
+            transform: translateY(-3px); /* Efecto de levantamiento */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .choice-button:active {
+            transform: translateY(0); /* Efecto de presión */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos para el botón de reiniciar al final */
+        #restart-button {
+            background-color: #d53f8c; /* Rosa/Púrpura */
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 2rem; /* Espacio superior */
+        }
+        #restart-button:hover {
+            background-color: #ed64a6;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sección de estadísticas del jugador */
+        #player-stats {
+            background-color: #2b3b4a;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            color: #cbd5e0;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+            justify-content: center;
+            gap: 1rem;
+            border: 1px solid #4a5568;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        #player-stats div {
+            margin: 0 0.5rem;
+        }
+        #player-stats span {
+            font-weight: bold;
+            color: #90cdf4; /* Color para los valores */
+        }
+
+        /* Responsividad para pantallas pequeñas */
         @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            header p { font-size: 1rem; }
-            nav a { padding: 0.5rem 1rem; margin: 0 0.5rem; font-size: 0.9rem; }
-            .parallax-content h2 { font-size: 2rem; }
-            .parallax-content p { font-size: 1rem; }
-            .container h2 { font-size: 2rem; }
-            .grid { grid-template-columns: 1fr; }
+            .adventure-title {
+                font-size: 2rem;
+            }
+            #story-text {
+                font-size: 1rem;
+                min-height: 120px;
+            }
+            .choice-button {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+            .adventure-container {
+                padding: 1.5rem;
+                gap: 1rem;
+            }
         }
-
         @media (max-width: 480px) {
-            header h1 { font-size: 2rem; }
-            nav a { margin: 0 0.2rem; }
+            .adventure-title {
+                font-size: 1.6rem;
+            }
+            #story-text {
+                font-size: 0.9rem;
+                min-height: 100px;
+            }
+            .choice-button {
+                font-size: 0.9rem;
+                padding: 0.7rem 0.8rem;
+            }
+            #player-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Penta Parallax</h1>
-        <p>Una experiencia de desplazamiento inmersiva y dinámica.</p>
-    </header>
+    <div class="adventure-container">
+        <h1 class="adventure-title">La Búsqueda del Orbe de Lumina</h1>
 
-    <nav>
-        <a href="#intro">Inicio</a>
-        <a href="#vision">Visión</a>
-        <a href="#mision">Misión</a>
-        <a href="#valores">Valores</a>
-        <a href="#futuro">Futuro</a>
-        <a href="#contacto">Contacto</a>
-    </nav>
+        <div id="story-text" class="visible"></div>
 
-    <!-- Sección Parallax 1: Introducción -->
-    <section id="intro" class="parallax-section parallax-layer-1">
-        <div class="parallax-content animated">
-            <h2>Bienvenido a Penta Parallax</h2>
-            <p>Descubre una nueva forma de navegar por el contenido. Cada capa te revelará una parte de nuestra historia.</p>
+        <div id="choices-container"></div>
+
+        <button id="restart-button" class="hidden" onclick="startGame()">Reiniciar Aventura</button>
+
+        <div id="player-stats">
+            <div>Valentía: <span id="stat-bravery">0</span></div>
+            <div>Conocimiento: <span id="stat-knowledge">0</span></div>
+            <div>Rep. Elara: <span id="stat-elara">0</span></div>
+            <div>Rep. Kael: <span id="stat-kael">0</span></div>
         </div>
-    </section>
-
-    <!-- Sección de Contenido Regular 1 -->
-    <section class="regular-section">
-        <div class="container">
-            <h2>Explora Nuestra Esencia</h2>
-            <p>En este viaje interactivo, te invitamos a sumergirte en los pilares que nos definen. Desplázate hacia abajo para desvelar cada uno de ellos.</p>
-            <div class="grid">
-                <div class="grid-item">
-                    <h3>Innovación Constante</h3>
-                    <p>Estamos comprometidos con la búsqueda de soluciones creativas y la implementación de las últimas tecnologías para superar las expectativas.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Diseño Centrado en el Usuario</h3>
-                    <p>Cada detalle está pensado para ofrecer una experiencia intuitiva, agradable y eficiente a quienes interactúan con nuestra plataforma.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Impacto Sostenible</h3>
-                    <p>Creemos en la creación de valor que no solo beneficie a nuestros usuarios, sino que también contribuya positivamente al entorno y la sociedad.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Parallax 2: Visión -->
-    <section id="vision" class="parallax-section parallax-layer-2">
-        <div class="parallax-content animated">
-            <h2>Nuestra Visión Futura</h2>
-            <p>Aspiramos a ser líderes en la creación de experiencias digitales que conecten, inspiren y transformen la interacción humana con la tecnología.</p>
-        </div>
-    </section>
-
-    <!-- Sección de Contenido Regular 2 -->
-    <section class="regular-section">
-        <div class="container">
-            <h2>Pilares de Nuestra Visión</h2>
-            <p>Nuestra visión se sustenta en principios clave que guían cada uno de nuestros pasos y decisiones estratégicas.</p>
-            <div class="grid">
-                <div class="grid-item">
-                    <h3>Acceso Global</h3>
-                    <p>Democratizar el acceso a herramientas y conocimientos avanzados, eliminando barreras geográficas y tecnológicas.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Creatividad Ilimitada</h3>
-                    <p>Fomentar un entorno donde la imaginación y la experimentación no tengan límites, impulsando la innovación en todos los niveles.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Comunidad Colaborativa</h3>
-                    <p>Construir un ecosistema donde usuarios y creadores puedan colaborar, compartir y crecer juntos.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Parallax 3: Misión -->
-    <section id="mision" class="parallax-section parallax-layer-3">
-        <div class="parallax-content animated">
-            <h2>Nuestra Misión Actual</h2>
-            <p>Desarrollar soluciones digitales de vanguardia que simplifiquen la complejidad, mejoren la productividad y enriquezcan la vida diaria de las personas.</p>
-        </div>
-    </section>
-
-    <!-- Sección de Contenido Regular 3 -->
-    <section class="regular-section">
-        <div class="container">
-            <h2>Cómo Cumplimos Nuestra Misión</h2>
-            <p>Trabajamos incansablemente para llevar a cabo nuestra misión a través de un enfoque dedicado y meticuloso.</p>
-            <div class="grid">
-                <div class="grid-item">
-                    <h3>Investigación y Desarrollo</h3>
-                    <p>Invertimos en investigación para entender las necesidades emergentes y desarrollar tecnologías que las satisfagan.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Excelencia Operativa</h3>
-                    <p>Optimizamos nuestros procesos para asegurar la entrega de productos y servicios de la más alta calidad.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Soporte Excepcional</h3>
-                    <p>Ofrecemos un soporte robusto y accesible para garantizar que nuestros usuarios aprovechen al máximo nuestras soluciones.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Parallax 4: Valores -->
-    <section id="valores" class="parallax-section parallax-layer-4">
-        <div class="parallax-content animated">
-            <h2>Nuestros Valores Fundamentales</h2>
-            <p>La integridad, la pasión y la colaboración son los cimientos sobre los que construimos todas nuestras interacciones y proyectos.</p>
-        </div>
-    </section>
-
-    <!-- Sección de Contenido Regular 4 -->
-    <section class="regular-section">
-        <div class="container">
-            <h2>Principios que Nos Guían</h2>
-            <p>Nuestros valores son el alma de nuestra organización, reflejándose en cada decisión y en cada interacción.</p>
-            <div class="grid">
-                <div class="grid-item">
-                    <h3>Integridad</h3>
-                    <p>Actuamos con honestidad, transparencia y ética en todas nuestras operaciones y relaciones.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Pasión</h3>
-                    <p>Abrazamos cada desafío con entusiasmo y dedicación, buscando siempre la excelencia en lo que hacemos.</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Colaboración</h3>
-                    <p>Fomentamos el trabajo en equipo y la sinergia, reconociendo que los mejores resultados nacen de la diversidad de ideas.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Parallax 5: Futuro -->
-    <section id="futuro" class="parallax-section parallax-layer-5">
-        <div class="parallax-content animated">
-            <h2>El Futuro con Penta Parallax</h2>
-            <p>Continuaremos innovando y explorando nuevas fronteras para ofrecer experiencias que inspiren y empoderen a nuestros usuarios.</p>
-        </div>
-    </section>
-
-    <!-- Sección de Contenido Regular 5 -->
-    <section class="regular-section" id="contacto">
-        <div class="container">
-            <h2>Únete a Nuestro Viaje</h2>
-            <p>Estamos siempre abiertos a nuevas ideas y colaboraciones. ¡Contacta con nosotros para empezar a crear el futuro!</p>
-            <div class="grid">
-                <div class="grid-item">
-                    <h3>Envíanos un Correo</h3>
-                    <p>info@pentaparallax.com</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Llámanos</h3>
-                    <p>+XX XXX XXX XXXX</p>
-                </div>
-                <div class="grid-item">
-                    <h3>Nuestras Redes</h3>
-                    <p>Síguenos en redes sociales para estar al día de las últimas novedades.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Penta Parallax. Todos los derechos reservados.</p>
-    </footer>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Selecciona todas las secciones parallax y de contenido regular
-            const sections = document.querySelectorAll('.parallax-content, .regular-section h2, .regular-section p, .grid-item');
-
-            // Opciones para Intersection Observer
-            const observerOptions = {
-                root: null, // Observa el viewport
-                rootMargin: '0px',
-                threshold: 0.2 // Cuando el 20% del elemento es visible
-            };
-
-            // Callback que se ejecuta cuando un elemento entra/sale del viewport
-            const observerCallback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Si el elemento está visible, añade la clase para animar
-                        entry.target.classList.add('is-visible');
+        // --- Definición de la Historia y Escenas ---
+        const story = {
+            "start": {
+                "text": "Te encuentras al borde del misterioso Bosque Susurrante, donde se rumorea que yace un antiguo artefacto de inmenso poder: el Orbe de Lumina. El aire está cargado de magia y una densa niebla matutina. ¿Qué haces?",
+                "choices": [
+                    { "text": "Avanzar directamente por el sendero principal, confiando en tu instinto.", "nextSceneId": "path_start" },
+                    { "text": "Buscar huellas o señales de otros exploradores que hayan pasado antes que tú.", "nextSceneId": "tracks_start" }
+                ]
+            },
+            "path_start": {
+                "text": "El sendero es estrecho y sinuoso, apenas visible bajo las ramas entrelazadas. Escuchas un leve crujido entre los arbustos cercanos, como si algo grande se moviera. ¿Investigas el ruido o continúas sin distracciones?",
+                "choices": [
+                    { "text": "Investigar el ruido, con cautela pero decidido.", "nextSceneId": "investigate_noise", "effects": { "bravery": 1 } },
+                    { "text": "Ignorar y seguir adelante, priorizando la misión.", "nextSceneId": "ignore_noise" }
+                ]
+            },
+            "tracks_start": {
+                "text": "Rastreando el terreno húmedo, encuentras unas huellas inusuales, demasiado grandes y profundas para un animal común. Parecen frescas, dejadas por un ser pesado. ¿Las sigues o prefieres la ruta más segura?",
+                "choices": [
+                    { "text": "Seguir las huellas en la oscuridad del bosque, buscando respuestas.", "nextSceneId": "follow_tracks", "effects": { "knowledge": 1 } },
+                    { "text": "Decidir que es demasiado arriesgado y volver al sendero principal.", "nextSceneId": "path_start" }
+                ]
+            },
+            "investigate_noise": {
+                "text": "Te acercas sigilosamente y descubres a **Elara**, una erudita de renombre, atrapada en una red antigua. Parece exhausta y sus pergaminos están esparcidos, pero sus ojos brillan con una determinación indomable. ¿La ayudas a liberarse?",
+                "choices": [
+                    { "text": "Sí, la liberas con cuidado, preguntando por qué está aquí.", "nextSceneId": "help_elara", "effects": { "elaraReputation": 1 } },
+                    { "text": "No, es demasiado riesgo. Sigues tu camino, priorizando tu propia seguridad.", "nextSceneId": "abandon_elara", "effects": { "elaraReputation": -1 } }
+                ]
+            },
+            "ignore_noise": {
+                "text": "Decides ignorar el crujido. El bosque se vuelve más denso, y pronto te sientes un poco desorientado. El camino se bifurca en dos senderos idénticos. ¿Cuál eliges?",
+                "choices": [
+                    { "text": "Tomar el sendero de la izquierda.", "nextSceneId": "lost_path_left" },
+                    { "text": "Tomar el sendero de la derecha.", "nextSceneId": "lost_path_right" }
+                ]
+            },
+            "follow_tracks": {
+                "text": "Las huellas te llevan a un claro donde **Kael**, un imponente mercenario conocido por su fuerza, está examinando un mapa antiguo con una expresión sombría. Él levanta la vista y te mira con desconfianza. ¿Cómo reaccionas ante su presencia?",
+                "choices": [
+                    { "text": "Presentarte amistosamente y explicar tu misión.", "nextSceneId": "talk_kael", "effects": { "knowledge": 1 } },
+                    { "text": "Mantener distancia y observarlo desde las sombras, preparándote para lo peor.", "nextSceneId": "spy_kael", "effects": { "bravery": 1 } }
+                ]
+            },
+            "help_elara": {
+                "text": "Elara te agradece profusamente. 'Estoy buscando el Orbe de Lumina', dice. 'Mi conocimiento de lenguas antiguas y magia podría ser crucial. ¿Te unirías a mí? Mis habilidades y las tuyas podrían ser invencibles.'",
+                "choices": [
+                    { "text": "Sí, te unes a Elara. Su conocimiento es valioso.", "nextSceneId": "team_elara", "effects": { "elaraReputation": 1, "knowledge": 1 } },
+                    { "text": "No, agradeces su oferta, pero prefieres continuar solo en tu búsqueda.", "nextSceneId": "alone_path" }
+                ]
+            },
+            "abandon_elara": {
+                "text": "Dejas a Elara atrás, aún atrapada. Su mirada de decepción te persigue por un momento. Un escalofrío te recorre la espalda. Sigues solo por el sendero principal, sintiéndote ligeramente culpable.",
+                "choices": [
+                    { "text": "Continuar solo.", "nextSceneId": "alone_path" }
+                ]
+            },
+            "lost_path_left": {
+                "text": "El sendero de la izquierda te lleva a un precipicio insalvable. No hay forma de seguir por aquí sin una ayuda mágica o equipo especial.",
+                "choices": [
+                    { "text": "Buscar otro camino.", "nextSceneId": "find_another_way" }
+                ]
+            },
+            "lost_path_right": {
+                "text": "El sendero de la derecha te lleva a una cueva oscura y húmeda. Huele a moho y algo más... algo antiguo y misterioso. ¿Entras o buscas otra opción?",
+                "choices": [
+                    { "text": "Entrar en la cueva, dispuesto a enfrentar lo desconocido.", "nextSceneId": "enter_cave", "effects": { "bravery": 1 } },
+                    { "text": "Volver al sendero principal y buscar otra bifurcación.", "nextSceneId": "find_another_way" }
+                ]
+            },
+            "talk_kael": {
+                "text": "Kael escucha tu historia, pero se mantiene escéptico. 'Muchos han buscado el Orbe, y pocos han regresado. ¿Qué te hace diferente?', pregunta con voz grave. ¿Cómo respondes a su desafío?",
+                "choices": [
+                    { "text": "Destacar tu nobleza y pureza de intenciones.", "nextSceneId": "kael_noble" },
+                    { "text": "Mencionar los peligros que has superado para llegar hasta aquí, demostrando tu capacidad.", "nextSceneId": "kael_brave", "effects": { "bravery": 1 } }
+                ]
+            },
+            "spy_kael": {
+                "text": "Observas a Kael desde la distancia. Parece que protege algo en el centro del claro. Decide irse, dejando el claro despejado. Ahora puedes ver lo que protegía: un mapa detallado del Santuario Antiguo con anotaciones en un dialecto rúnico. ¿Lo tomas?",
+                "choices": [
+                    { "text": "Tomar el mapa. El conocimiento es poder.", "nextSceneId": "take_map", "effects": { "knowledge": 1, "kaelReputation": -1 } },
+                    { "text": "Dejar el mapa y seguir tu propio camino, no queriendo enemistarte con Kael.", "nextSceneId": "alone_path" }
+                ]
+            },
+            "team_elara": {
+                "text": "Con Elara a tu lado, avanzas con confianza. Ella conoce atajos y los peligros ocultos del bosque. Su experiencia te ahorra mucho tiempo y esfuerzo. Pronto, llegan a las imponentes ruinas del Santuario Antiguo.",
+                "choices": [
+                    { "text": "Entrar al Santuario junto a Elara.", "nextSceneId": "santuario_entrance_team" }
+                ]
+            },
+            "alone_path": {
+                "text": "Decides aventurarte solo. El bosque es traicionero, pero tu determinación es fuerte. Después de horas de arduo viaje, evadiendo trampas y bestias menores, llegas a las ruinas del Santuario Antiguo.",
+                "choices": [
+                    { "text": "Entrar al Santuario.", "nextSceneId": "santuario_entrance_alone" }
+                ]
+            },
+            "find_another_way": {
+                "text": "Después de un tiempo, y con un poco de suerte, logras encontrar un camino alternativo que te saca del laberinto del bosque. Llegas a un punto donde el sendero es claro de nuevo, dirigiéndote hacia el Santuario.",
+                "choices": [
+                    { "text": "Continuar hacia el Santuario.", "nextSceneId": "alone_path" }
+                ]
+            },
+            "enter_cave": {
+                "text": "La cueva es un laberinto de pasajes estrechos y estalactitas. Por suerte, encuentras una salida secreta que te lleva directamente a las afueras del Santuario Antiguo. ¡Qué golpe de suerte! O quizás, ¿el destino?",
+                "choices": [
+                    { "text": "Entrar al Santuario.", "nextSceneId": "santuario_entrance_alone" }
+                ]
+            },
+            "kael_noble": {
+                "text": "Kael parece un poco impresionado por tu honestidad. 'Bien', dice, 'si tus intenciones son puras, adelante. Solo no interfieras con lo que es mío.' Te permite pasar hacia el Santuario, pero su mirada aún es penetrante.",
+                "choices": [
+                    { "text": "Ir hacia el Santuario.", "nextSceneId": "santuario_entrance_alone", "effects": { "kaelReputation": 1 } }
+                ]
+            },
+            "kael_brave": {
+                "text": "Kael asiente con una expresión indescifrable. 'Valiente, pero la valentía sin sabiduría es imprudencia. Anda, demuestra que eres más que solo fuerza.' Te permite pasar, pero con una cautela evidente.",
+                "choices": [
+                    { "text": "Ir hacia el Santuario.", "nextSceneId": "santuario_entrance_alone", "effects": { "kaelReputation": 0.5 } }
+                ]
+            },
+            "take_map": {
+                "text": "Con el mapa de Kael en tu poder, la ruta hacia el Santuario es mucho más clara y rápida. Ahora sabes exactamente dónde ir, aunque Kael podría no estar contento si descubre tu 'préstamo'.",
+                "choices": [
+                    { "text": "Dirigirte al Santuario sin demora.", "nextSceneId": "santuario_entrance_alone" }
+                ]
+            },
+            "santuario_entrance_team": {
+                "text": "Elara y tú llegan a la imponente entrada del Santuario Antiguo. Un gran grabado en la pared muestra símbolos cósmicos complejos y enigmáticos. Elara dice: 'Debemos descifrar esto para abrir la puerta. Es un enigma sobre el equilibrio de las estrellas.' ¿Qué haces?",
+                "choices": [
+                    { "text": "Dejar que Elara intente descifrar los símbolos, ofreciéndole tu apoyo.", "nextSceneId": "santuario_puzzle_elara", "effects": { "elaraReputation": 1 } },
+                    { "text": "Buscar una entrada oculta o secreta, creyendo que hay un atajo.", "nextSceneId": "santuario_secret" }
+                ]
+            },
+            "santuario_entrance_alone": {
+                "text": "Llegas a la imponente entrada del Santuario Antiguo. Un gran grabado en la pared muestra símbolos cósmicos. La puerta principal está sellada mágicamente. ¿Intentas descifrar los símbolos o buscas una entrada secreta?",
+                "choices": [
+                    { "text": "Intentar descifrar los símbolos por tu cuenta.", "nextSceneId": "santuario_puzzle_alone" },
+                    { "text": "Buscar una entrada oculta o secreta.", "nextSceneId": "santuario_secret" }
+                ]
+            },
+            "santuario_puzzle_elara": {
+                "text": "Elara se concentra en los símbolos, murmurando antiguos conjuros. Con su profundo conocimiento y tu presencia tranquilizadora, las piezas del enigma encajan. La gran puerta de piedra se abre con un estruendo que resuena por todo el bosque.",
+                "choices": [
+                    { "text": "Entrar en la cámara del Orbe junto a Elara.", "nextSceneId": "orbe_chamber" }
+                ]
+            },
+            "santuario_puzzle_alone": {
+                "text": (playerState) => {
+                    if (playerState.knowledge >= 2) { // Requiere 2+ de conocimiento
+                        return "Con tu aguda perspicacia y tu creciente conocimiento, los símbolos se revelan como un complejo rompecabezas celestial. Tras unos momentos de concentración, logras la secuencia correcta. La gran puerta de piedra se abre con un estruendo. ¡Lo lograste solo!";
                     } else {
-                        // Opcional: Si quieres que la animación se reinicie al salir, descomenta la siguiente línea
-                        // entry.target.classList.remove('is-visible');
+                        return "A pesar de tus esfuerzos, los símbolos son demasiado complejos y enigmáticos para tus conocimientos actuales. La puerta permanece sellada, impasible. Parece que necesitas más sabiduría para esta tarea.";
                     }
+                },
+                "choices": (playerState) => {
+                    if (playerState.knowledge >= 2) {
+                        return [{ "text": "Entrar en la cámara del Orbe.", "nextSceneId": "orbe_chamber" }];
+                    } else {
+                        return [{ "text": "Rendirte y buscar una entrada secreta.", "nextSceneId": "santuario_secret" }];
+                    }
+                }
+            },
+            "santuario_secret": {
+                "text": "Después de buscar meticulosamente entre las enredaderas y las piedras desmoronadas, encuentras un pequeño pasaje oculto, casi invisible. Es estrecho y oscuro, pero parece seguro. Te arrastras por él y, para tu sorpresa, te lleva directamente a la imponente cámara del Orbe.",
+                "choices": [
+                    { "text": "Entrar en la cámara del Orbe.", "nextSceneId": "orbe_chamber" }
+                ]
+            },
+            "orbe_chamber": {
+                "text": "Dentro de la cámara, el **Orbe de Lumina** flota en el aire en el centro, irradiando una luz pulsante que llena cada rincón de la habitación. Es más grande y poderoso de lo que imaginabas, una fuente de energía cósmica pura. Puedes sentir su inmenso poder. ¿Qué haces con el Orbe?",
+                "choices": [
+                    { "text": "Tocar el Orbe directamente, buscando fusionarte con su energía.", "nextSceneId": "ending_absorption" },
+                    { "text": "Intentar concentrarte y controlarlo, buscando dominar su poder para tus propios fines.", "nextSceneId": "ending_control" },
+                    { "text": "Considerar destruirlo, para que su inmenso poder no caiga en malas manos y cause destrucción.", "nextSceneId": "ending_destruction" }
+                ],
+                "endingChoicePoint": true // Marca esta escena como el punto de decisión final del ending
+            },
+
+            // --- FINALES ---
+            "ending_absorption": {
+                "text": "Al tocar el Orbe, una luz cegadora te envuelve. No hay dolor, solo una sensación de expansión infinita. Tus sentidos se disuelven y se reforman mientras te fusionas con la energía de Lumina. Te conviertes en parte del cosmos mismo, tu viaje como mortal ha terminado, pero tu esencia perdura como una nueva estrella en el firmamento. ¡FINAL: Fusión Cósmica!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_control_hero": {
+                "text": "Te concentras con toda tu voluntad, y el Orbe obedece. Su luz se calma y se moldea a tu alrededor. Has dominado el poder de Lumina, usándolo para traer una era de paz y prosperidad al reino. Con Elara a tu lado, los rumores de sus hazañas se esparcen por doquier, y son celebrados como héroes que trajeron una nueva era de luz. ¡FINAL: El Héroe de Lumina y su Aliada!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_control_lonely_master": {
+                "text": "Tu intelecto superior te permite comprender la verdadera naturaleza del Orbe. Lo dominas completamente, no por la fuerza, sino por la sabiduría. Te conviertes en un maestro de los secretos de Lumina, capaz de alterar la realidad a tu antojo, para bien o para mal. Vives como un guardián solitario, una leyenda en susurros. ¡FINAL: El Maestro Solitario de Lumina!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_control_tyrant": {
+                "text": "Cuando intentas controlar el Orbe, una oscuridad en tu corazón resuena con su poder inmenso. No lo domas, lo corrompes. Usas el Orbe para conquistar reinos, someter voluntades y acumular un poder ilimitado. Te conviertes en un tirano temido, cuyo nombre es sinónimo de destrucción y opresión. ¡FINAL: El Conquistador Oscuro!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_control_failed": {
+                "text": "Intentas controlar el Orbe, pero su inmenso poder es abrumador para tus habilidades actuales. La energía te golpea, dejándote débil y desorientado. Caes inconsciente, y al despertar, el Orbe ha desaparecido, y el Santuario se desmorona a tu alrededor. Apenas logras escapar, pero la oportunidad se ha perdido para siempre. ¡FINAL: Oportunidad Perdida!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_destruction_sacrifice": {
+                "text": "Con la convicción de que nadie debería poseer tal poder, golpeas el Orbe. Una explosión controlada de energía limpia el bosque, disipando su magia oscura sin causar daño colateral. Sobrevives, pero el Orbe ya no es una amenaza. El reino vive en paz, gracias a tu valeroso sacrificio. ¡FINAL: El Gran Sacrificio!",
+                "choices": [],
+                "ending": true
+            },
+            "ending_destruction_catastrophe": {
+                "text": "Con una furia ciega, golpeas el Orbe sin comprender su verdadera naturaleza. Una explosión de energía caótica destruye el Santuario y gran parte del bosque circundante, dejando un cráter humeante. Sobrevives, pero eres el único testigo de la devastación que causaste. El poder es eliminado, pero a un costo terrible. ¡FINAL: Devastación Catastrófica!",
+                "choices": [],
+                "ending": true
+            }
+        };
+
+        // --- Estado del Jugador ---
+        let playerState = {
+            bravery: 0,
+            knowledge: 0,
+            elaraReputation: 0, // Positivo para aliado, negativo para enemigo
+            kaelReputation: 0   // Positivo para aliado, negativo para enemigo
+        };
+
+        let currentSceneId = "start"; // Escena inicial
+
+        // --- Elementos del DOM ---
+        const storyTextElement = document.getElementById('story-text');
+        const choicesContainer = document.getElementById('choices-container');
+        const restartButton = document.getElementById('restart-button');
+        const statBravery = document.getElementById('stat-bravery');
+        const statKnowledge = document.getElementById('stat-knowledge');
+        const statElara = document.getElementById('stat-elara');
+        const statKael = document.getElementById('stat-kael');
+
+        // --- Funciones del Juego ---
+
+        // Función para actualizar las estadísticas en la UI
+        function updateStats() {
+            statBravery.textContent = playerState.bravery;
+            statKnowledge.textContent = playerState.knowledge;
+            statElara.textContent = playerState.elaraReputation;
+            statKael.textContent = playerState.kaelReputation;
+        }
+
+        // Función para cargar una escena
+        function loadScene(sceneId) {
+            currentSceneId = sceneId;
+            const scene = story[sceneId];
+
+            // Determinar el final si estamos en el punto de decisión final
+            if (scene.endingChoicePoint) {
+                let finalEndingId;
+                if (playerState.elaraReputation >= 2 && playerState.knowledge >= 2) {
+                    finalEndingId = "ending_control_hero"; // Elara y conocimiento: Buen final con ella
+                } else if (playerState.knowledge >= 3) {
+                    finalEndingId = "ending_control_lonely_master"; // Solo conocimiento: Maestro solitario
+                } else if (playerState.bravery >= 3) {
+                    finalEndingId = "ending_destruction_sacrifice"; // Mucha valentía: Sacrificio controlado
+                } else if (playerState.elaraReputation <= -1 && playerState.kaelReputation <= -1) {
+                    finalEndingId = "ending_control_tyrant"; // Mal con ambos: Tirano
+                } else if (sceneId === "orbe_chamber" && scene.choices[0] && scene.choices[0].nextSceneId === "ending_absorption") {
+                    // Si el jugador eligió "Tocar el Orbe" de forma genérica
+                    finalEndingId = "ending_absorption";
+                } else if (sceneId === "orbe_chamber" && scene.choices[1] && scene.choices[1].nextSceneId === "ending_control") {
+                    // Si el jugador eligió "Controlarlo" de forma genérica y no cumple otros finales
+                    finalEndingId = "ending_control_failed";
+                } else if (sceneId === "orbe_chamber" && scene.choices[2] && scene.choices[2].nextSceneId === "ending_destruction") {
+                    // Si el jugador eligió "Destruirlo" de forma genérica y no cumple otros finales
+                    finalEndingId = "ending_destruction_catastrophe";
+                }
+                // Si ninguna condición específica se cumple, el juego seguirá la elección original en la escena orbe_chamber,
+                // donde el texto y las opciones se adaptarán si son funciones.
+                if (finalEndingId) {
+                    loadScene(finalEndingId);
+                    return;
+                }
+            }
+
+
+            // Vaciar las opciones anteriores
+            choicesContainer.innerHTML = '';
+            restartButton.classList.add('hidden'); // Ocultar el botón de reiniciar por defecto
+
+            // Añadir animación de entrada al texto
+            storyTextElement.classList.remove('visible');
+            setTimeout(() => {
+                // Si el texto es una función (para finales dinámicos), ejecutarlo con playerState
+                storyTextElement.textContent = typeof scene.text === 'function' ? scene.text(playerState) : scene.text;
+                storyTextElement.classList.add('visible');
+            }, 50); // Pequeño delay para la animación
+
+            updateStats(); // Actualizar stats cada vez que cambia la escena
+
+            // Si es un final, mostrar botón de reiniciar
+            if (scene.ending) {
+                restartButton.classList.remove('hidden');
+            } else {
+                // Crear botones para cada opción
+                const currentChoices = typeof scene.choices === 'function' ? scene.choices(playerState) : scene.choices;
+                currentChoices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.classList.add('choice-button');
+                    button.textContent = choice.text;
+                    button.onclick = () => handleChoice(choice.nextSceneId, choice.effects);
+                    choicesContainer.appendChild(button);
                 });
+            }
+        }
+
+        // Función para manejar la elección del jugador
+        function handleChoice(nextSceneId, effects) {
+            // Aplicar efectos al estado del jugador
+            if (effects) {
+                for (const stat in effects) {
+                    if (playerState.hasOwnProperty(stat)) {
+                        playerState[stat] += effects[stat];
+                    }
+                }
+            }
+            loadScene(nextSceneId); // Cargar la siguiente escena
+        }
+
+        // Función para iniciar/reiniciar el juego
+        function startGame() {
+            // Reiniciar el estado del jugador
+            playerState = {
+                bravery: 0,
+                knowledge: 0,
+                elaraReputation: 0,
+                kaelReputation: 0
             };
+            loadScene("start"); // Cargar la primera escena
+        }
 
-            // Crea una nueva instancia de Intersection Observer
-            const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-            // Observa cada sección
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-        });
+        // Iniciar el juego al cargar la página
+        document.addEventListener('DOMContentLoaded', startGame);
     </script>
 </body>
 </html>
