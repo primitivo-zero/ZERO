@@ -3,810 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aventura Interactiva: El Orbe de Lumina</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            background-color: #1a202c;
-            color: #e2e8f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        .adventure-container {
-            background-color: #2d3748;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            padding: 2.5rem;
-            max-width: 900px;
-            width: 95%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            border: 2px solid #4a5568;
-        }
-
-        .adventure-title {
-            font-size: 2.8rem;
-            font-weight: bold;
-            color: #a0aec0;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            margin-bottom: 1.5rem;
-        }
-
-        #story-text {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            min-height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #1a202c;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-            text-align: left;
-            border: 1px solid #4a5568;
-            line-height: 1.8;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        #story-text.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #choices-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .choice-button {
-            background-color: #4c51bf;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .choice-button:hover {
-            background-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .choice-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        #restart-button {
-            background-color: #d53f8c;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 2rem;
-        }
-        #restart-button:hover {
-            background-color: #ed64a6;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        #player-stats {
-            background-color: #2b3b4a;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            font-size: 0.9rem;
-            color: #cbd5e0;
-            margin-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            border: 1px solid #4a5568;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-        #player-stats div {
-            margin: 0 0.5rem;
-        }
-        #player-stats span {
-            font-weight: bold;
-            color: #90cdf4;
-        }
-        #player-inventory {
-            font-size: 0.9rem;
-            color: #cbd5e0;
-            margin-top: 1rem;
-            text-align: center;
-        }
-        #player-inventory ul {
-            list-style: none;
-            padding: 0;
-            display: inline-block;
-            text-align: left;
-        }
-        #player-inventory li {
-            margin-bottom: 0.3rem;
-            color: #9ae6b4; /* Un verde suave para los ítems */
-        }
-
-        /* Estilos para la pantalla de inicio */
-        #start-screen {
-            background-color: #2d3748;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            padding: 2.5rem;
-            max-width: 600px;
-            width: 95%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            border: 2px solid #4a5568;
-            position: absolute; /* Para superponerse al juego */
-            z-index: 100;
-        }
-        #start-screen h2 {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #a0aec0;
-            margin-bottom: 1rem;
-        }
-        #start-screen label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-            color: #cbd5e0;
-        }
-        #start-screen select, #start-screen button {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 0.5rem;
-            border: 1px solid #4a5568;
-            background-color: #1a202c;
-            color: #e2e8f0;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 1rem;
-        }
-        #start-screen select:focus, #start-screen button:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        #start-screen button {
-            background-color: #4c51bf;
-            transition: background-color 0.3s ease;
-        }
-        #start-screen button:hover {
-            background-color: #667eea;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .adventure-title { font-size: 2rem; }
-            #story-text { font-size: 1rem; min-height: 120px; }
-            .choice-button { font-size: 1rem; padding: 0.8rem 1rem; }
-            .adventure-container { padding: 1.5rem; gap: 1rem; }
-            #start-screen h2 { font-size: 1.6rem; }
-            #start-screen select, #start-screen button { padding: 0.7rem; font-size: 0.9rem; }
-        }
-        @media (max-width: 480px) {
-            .adventure-title { font-size: 1.6rem; }
-            #story-text { font-size: 0.9rem; min-height: 100px; }
-            .choice-button { font-size: 0.9rem; padding: 0.7rem 0.8rem; }
-            #player-stats { flex-direction: column; gap: 0.5rem; }
-        }
-    </style>
+    <title>My Hero Academia: ¡Forja Tu Destino!</title>
+    <link rel="icon" href="img/ua_logo_favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div id="start-screen">
-        <h1 class="adventure-title">La Búsqueda del Orbe de Lumina</h1>
-        <h2>¡Crea tu Personaje!</h2>
-        <div class="mb-4">
-            <label for="gender-select" class="block text-lg font-medium text-gray-300">Elige tu Género:</label>
-            <select id="gender-select">
-                <option value="neutral">Prefiero no especificar</option>
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-            </select>
-        </div>
-        <div class="mb-6">
-            <label for="class-select" class="block text-lg font-medium text-gray-300">Elige tu Clase:</label>
-            <select id="class-select">
-                <option value="guerrero">Guerrero</option>
-                <option value="erudito">Erudito</option>
-                <option value="picaro">Pícaro</option>
-                <option value="mago">Mago</option>
-            </select>
-        </div>
-        <button id="start-game-button">Comenzar Aventura</button>
-    </div>
-
-    <div class="adventure-container hidden" id="game-container">
-        <h1 class="adventure-title">La Búsqueda del Orbe de Lumina</h1>
-
-        <div id="story-text" class="visible"></div>
-
-        <div id="choices-container"></div>
-
-        <button id="restart-button" class="hidden" onclick="startGame()">Reiniciar Aventura</button>
-
-        <div id="player-stats">
-            <div>Género: <span id="stat-gender"></span></div>
-            <div>Clase: <span id="stat-class"></span></div>
-            <div>Valentía: <span id="stat-bravery">0</span></div>
-            <div>Conocimiento: <span id="stat-knowledge">0</span></div>
-            <div>Agilidad: <span id="stat-agility">0</span></div>
-            <div>Poder Mágico: <span id="stat-magicpower">0</span></div>
-            <div>Rep. Elara: <span id="stat-elara">0</span></div>
-            <div>Rep. Kael: <span id="stat-kael">0</span></div>
-        </div>
-        <div id="player-inventory">
-            <h3>Inventario:</h3>
-            <ul id="inventory-list">
-                </ul>
+    <div id="loading-overlay" class="overlay active">
+        <div class="loading-content">
+            <h1>Cargando Tu Aventura de Héroe...</h1>
+            <div class="loading-spinner"></div>
+            <p>¡Plus Ultra!</p>
         </div>
     </div>
 
-    <div id="endings-summary-container" class="adventure-container hidden">
-        <h2 class="adventure-title">Resumen de tu Aventura</h2>
-        <div id="main-ending-text" class="story-text"></div>
-        <h3 class="text-xl font-bold text-gray-300 mt-6 mb-3">Historias Secundarias y Logros:</h3>
-        <ul id="secondary-endings-list" class="text-left mx-auto max-w-md">
-            </ul>
-        <button id="final-restart-button" class="restart-button mt-8" onclick="showStartScreen()">Volver al Inicio</button>
-    </div>
+    <header>
+        <div class="header-content">
+            <img src="img/ua_logo.png" alt="Logo U.A. Academy" class="ua-logo">
+            <h1>My Hero Academia: ¡Forja Tu Destino!</h1>
+            <p>Una aventura interactiva donde tus decisiones moldean el futuro de la sociedad de héroes... o villanos. 🌟</p>
+        </div>
+    </header>
 
+    <main id="game-container">
+        <section id="intro-screen" class="game-section active">
+            <div class="intro-content">
+                <h2>¡Bienvenido al Mundo de los Dones!</h2>
+                <p>En un mundo donde el 80% de la población nace con superpoderes, los "Dones", la línea entre el bien y el mal es más delgada que nunca.</p>
+                <p>La **Academia U.A.** es el pináculo de la educación para futuros héroes. Tu carta de admisión ha llegado. Es tu oportunidad de demostrar tu valía.</p>
+                <button id="start-game-btn">¡Comenzar Nueva Partida! ▶️</button>
+                <button id="load-game-menu-btn" class="secondary-btn">📂 Cargar Partida Guardada</button>
+            </div>
+        </section>
 
-    <script>
-        // --- Definición de la Historia y Escenas ---
-        const story = {
-            "character_creation": {
-                "text": "Tu viaje comienza. ¿Qué tipo de héroe serás?",
-                "choices": [] // Manejado por la UI de selección de personaje
-            },
-            "start": {
-                "text": "Te encuentras al borde del misterioso Bosque Susurrante, donde se rumorea que yace un antiguo artefacto de inmenso poder: el Orbe de Lumina. El aire está cargado de magia y una densa niebla matutina. ¿Qué haces?",
-                "choices": [
-                    { "text": "Avanzar directamente por el sendero principal, confiando en tu instinto.", "nextSceneId": "path_start" },
-                    { "text": "Buscar huellas o señales de otros exploradores que hayan pasado antes que tú.", "nextSceneId": "tracks_start" },
-                    { "text": "Explorar los alrededores del bosque antes de entrar.", "nextSceneId": "forest_outskirts" } // Nueva opción de trama secundaria
-                ]
-            },
-            "forest_outskirts": { // Mini-historia 1: La hierba Luminiscente
-                "text": "Mientras exploras las afueras, encuentras un pequeño claro bañado por una luz extraña. Crecen unas hierbas de un color azul brillante. Parecen vibrar con energía.",
-                "choices": [
-                    { "text": "Recoger algunas de las hierbas para examinarlas más tarde.", "nextSceneId": "get_luminous_herb", "effects": {"knowledge": 0.5} },
-                    { "text": "Ignorarlas y buscar una entrada más convencional al bosque.", "nextSceneId": "path_start" }
-                ]
-            },
-            "get_luminous_herb": {
-                "text": "Con cuidado, recoges un manojo de la **Hierba Luminiscente**. Su brillo es suave y cálido. Sientes una ligera mejora en tu conexión con el mundo mágico. (Obtienes Hierba Luminiscente)",
-                "choices": [
-                    { "text": "Continuar hacia el sendero principal del bosque.", "nextSceneId": "path_start" }
-                ],
-                "effects": { "inventory": ["Hierba Luminiscente"], "magicPower": 1 },
-                "secondaryEndingFlag": "LuminousHerbObtained" // Marca que esta mini-historia se completó
-            },
-            // ... (otras escenas existentes, con posibles ajustes de efectos y opciones)
-            "path_start": {
-                "text": "El sendero es estrecho y sinuoso, apenas visible bajo las ramas entrelazadas. Escuchas un leve crujido entre los arbustos cercanos, como si algo grande se moviera. ¿Investigas el ruido o continúas sin distracciones?",
-                "choices": [
-                    { "text": "Investigar el ruido, con cautela pero decidido.", "nextSceneId": "investigate_noise", "effects": { "bravery": 1 } },
-                    { "text": "Ignorar y seguir adelante, priorizando la misión.", "nextSceneId": "ignore_noise" }
-                ]
-            },
-            "tracks_start": {
-                "text": "Rastreando el terreno húmedo, encuentras unas huellas inusuales, demasiado grandes y profundas para un animal común. Parecen frescas, dejadas por un ser pesado. ¿Las sigues o prefieres la ruta más segura?",
-                "choices": [
-                    { "text": "Seguir las huellas en la oscuridad del bosque, buscando respuestas.", "nextSceneId": "follow_tracks", "effects": { "knowledge": 1 } },
-                    { "text": "Decidir que es demasiado arriesgado y volver al sendero principal.", "nextSceneId": "path_start" }
-                ]
-            },
-            "investigate_noise": {
-                "text": "Te acercas sigilosamente y descubres a **Elara**, una erudita de renombre, atrapada en una red antigua. Parece exhausta y sus pergaminos están esparcidos, pero sus ojos brillan con una determinación indomable. ¿La ayudas a liberarse?",
-                "choices": [
-                    { "text": "Sí, la liberas con cuidado, preguntando por qué está aquí.", "nextSceneId": "help_elara", "effects": { "elaraReputation": 1 } },
-                    { "text": "No, es demasiado riesgo. Sigues tu camino, priorizando tu propia seguridad.", "nextSceneId": "abandon_elara", "effects": { "elaraReputation": -1 } }
-                ]
-            },
-            "help_elara": {
-                "text": "Elara te agradece profusamente. 'Estoy buscando el Orbe de Lumina', dice. 'Mi conocimiento de lenguas antiguas y magia podría ser crucial. ¿Te unirías a mí? Mis habilidades y las tuyas podrían ser invencibles.'",
-                "choices": [
-                    { "text": "Sí, te unes a Elara. Su conocimiento es valioso.", "nextSceneId": "team_elara", "effects": { "elaraReputation": 1, "knowledge": 1 } },
-                    { "text": "No, agradeces su oferta, pero prefieres continuar solo en tu búsqueda.", "nextSceneId": "alone_path" }
-                ]
-            },
-            "abandon_elara": {
-                "text": "Dejas a Elara atrás, aún atrapada. Su mirada de decepción te persigue por un momento. Un escalofrío te recorre la espalda. Sigues solo por el sendero principal, sintiéndote ligeramente culpable.",
-                "choices": [
-                    { "text": "Continuar solo.", "nextSceneId": "alone_path" }
-                ]
-            },
-            "ignore_noise": {
-                "text": "Decides ignorar el crujido. El bosque se vuelve más denso, y pronto te sientes un poco desorientado. El camino se bifurca en dos senderos idénticos. ¿Cuál eliges?",
-                "choices": [
-                    { "text": "Tomar el sendero de la izquierda.", "nextSceneId": "lost_path_left" },
-                    { "text": "Tomar el sendero de la derecha.", "nextSceneId": "lost_path_right" }
-                ]
-            },
-            "follow_tracks": {
-                "text": "Las huellas te llevan a un claro donde **Kael**, un imponente mercenario conocido por su fuerza, está examinando un mapa antiguo con una expresión sombría. Él levanta la vista y te mira con desconfianza. ¿Cómo reaccionas ante su presencia?",
-                "choices": [
-                    { "text": "Presentarte amistosamente y explicar tu misión.", "nextSceneId": "talk_kael", "effects": { "knowledge": 1 } },
-                    { "text": "Mantener distancia y observarlo desde las sombras, preparándote para lo peor.", "nextSceneId": "spy_kael", "effects": { "bravery": 1 } }
-                ]
-            },
-            "talk_kael": {
-                "text": "Kael escucha tu historia, pero se mantiene escéptico. 'Muchos han buscado el Orbe, y pocos han regresado. ¿Qué te hace diferente?', pregunta con voz grave. ¿Cómo respondes a su desafío?",
-                "choices": [
-                    { "text": "Destacar tu nobleza y pureza de intenciones.", "nextSceneId": "kael_noble" },
-                    { "text": "Mencionar los peligros que has superado para llegar hasta aquí, demostrando tu capacidad.", "nextSceneId": "kael_brave", "effects": { "bravery": 1 } }
-                ]
-            },
-            "spy_kael": {
-                "text": "Observas a Kael desde la distancia. Parece que protege algo en el centro del claro. Decide irse, dejando el claro despejado. Ahora puedes ver lo que protegía: un mapa detallado del Santuario Antiguo con anotaciones en un dialecto rúnico. ¿Lo tomas?",
-                "choices": [
-                    { "text": "Tomar el mapa. El conocimiento es poder.", "nextSceneId": "take_map", "effects": { "knowledge": 1, "kaelReputation": -1 } },
-                    { "text": "Dejar el mapa y seguir tu propio camino, no queriendo enemistarte con Kael.", "nextSceneId": "alone_path" }
-                ]
-            },
-            "team_elara": {
-                "text": "Con Elara a tu lado, avanzas con confianza. Ella conoce atajos y los peligros ocultos del bosque. Su experiencia te ahorra mucho tiempo y esfuerzo. Pronto, llegan a las imponentes ruinas del Santuario Antiguo.",
-                "choices": [
-                    { "text": "Entrar al Santuario junto a Elara.", "nextSceneId": "santuario_entrance_team" }
-                ]
-            },
-            "alone_path": {
-                "text": "Decides aventurarte solo. El bosque es traicionero, pero tu determinación es fuerte. Después de horas de arduo viaje, evadiendo trampas y bestias menores, llegas a las ruinas del Santuario Antiguo.",
-                "choices": [
-                    { "text": "Entrar al Santuario.", "nextSceneId": "santuario_entrance_alone" }
-                ]
-            },
-            "find_another_way": {
-                "text": "Después de un tiempo, y con un poco de suerte, logras encontrar un camino alternativo que te saca del laberinto del bosque. Llegas a un punto donde el sendero es claro de nuevo, dirigiéndote hacia el Santuario.",
-                "choices": [
-                    { "text": "Continuar hacia el Santuario.", "nextSceneId": "alone_path" }
-                ]
-            },
-            "enter_cave": {
-                "text": "La cueva es un laberinto de pasajes estrechos y estalactitas. Huele a moho y algo más... algo antiguo y misterioso. ¿Entras o buscas otra opción?",
-                "choices": [
-                    { "text": "Entrar en la cueva, dispuesto a enfrentar lo desconocido.", "nextSceneId": "santuario_entrance_alone", "effects": { "bravery": 1 } }, // Directo al santuario
-                    { "text": "Volver al sendero principal y buscar otra bifurcación.", "nextSceneId": "find_another_way" }
-                ]
-            },
-            "kael_noble": {
-                "text": "Kael parece un poco impresionado por tu honestidad. 'Bien', dice, 'si tus intenciones son puras, adelante. Solo no interfieras con lo que es mío.' Te permite pasar hacia el Santuario, pero su mirada aún es penetrante.",
-                "choices": [
-                    { "text": "Ir hacia el Santuario.", "nextSceneId": "santuario_entrance_alone", "effects": { "kaelReputation": 1 } }
-                ]
-            },
-            "kael_brave": {
-                "text": "Kael asiente con una expresión indescifrable. 'Valiente, pero la valentía sin sabiduría es imprudencia. Anda, demuestra que eres más que solo fuerza.' Te permite pasar, pero con una cautela evidente.",
-                "choices": [
-                    { "text": "Ir hacia el Santuario.", "nextSceneId": "santuario_entrance_alone", "effects": { "kaelReputation": 0.5 } }
-                ]
-            },
-            "take_map": {
-                "text": "Con el mapa de Kael en tu poder, la ruta hacia el Santuario es mucho más clara y rápida. Ahora sabes exactamente dónde ir, aunque Kael podría no estar contento si descubre tu 'préstamo'.",
-                "choices": [
-                    { "text": "Dirigirte al Santuario sin demora.", "nextSceneId": "santuario_entrance_alone" }
-                ]
-            },
-            "santuario_entrance_team": {
-                "text": "Elara y tú llegan a la imponente entrada del Santuario Antiguo. Un gran grabado en la pared muestra símbolos cósmicos complejos y enigmáticos. Elara dice: 'Debemos descifrar esto para abrir la puerta. Es un enigma sobre el equilibrio de las estrellas.' ¿Qué haces?",
-                "choices": [
-                    { "text": "Dejar que Elara intente descifrar los símbolos, ofreciéndole tu apoyo.", "nextSceneId": "santuario_puzzle_elara", "effects": { "elaraReputation": 1 } },
-                    { "text": "Buscar una entrada oculta o secreta, creyendo que hay un atajo.", "nextSceneId": "santuario_secret" }
-                ]
-            },
-            "santuario_entrance_alone": {
-                "text": "Llegas a la imponente entrada del Santuario Antiguo. Un gran grabado en la pared muestra símbolos cósmicos. La puerta principal está sellada mágicamente. ¿Intentas descifrar los símbolos o buscas una entrada secreta?",
-                "choices": [
-                    { "text": "Intentar descifrar los símbolos por tu cuenta.", "nextSceneId": "santuario_puzzle_alone" },
-                    { "text": "Buscar una entrada oculta o secreta.", "nextSceneId": "santuario_secret" }
-                ]
-            },
-            "santuario_puzzle_elara": {
-                "text": "Elara se concentra en los símbolos, murmurando antiguos conjuros. Con su profundo conocimiento y tu presencia tranquilizadora, las piezas del enigma encajan. La gran puerta de piedra se abre con un estruendo que resuena por todo el bosque.",
-                "choices": [
-                    { "text": "Entrar en la cámara del Orbe junto a Elara.", "nextSceneId": "orbe_chamber" }
-                ]
-            },
-            "santuario_puzzle_alone": {
-                "text": (playerState) => {
-                    if (playerState.knowledge >= 2) {
-                        return "Con tu aguda perspicacia y tu creciente conocimiento, los símbolos se revelan como un complejo rompecabezas celestial. Tras unos momentos de concentración, logras la secuencia correcta. La gran puerta de piedra se abre con un estruendo. ¡Lo lograste solo!";
-                    } else {
-                        return "A pesar de tus esfuerzos, los símbolos son demasiado complejos y enigmáticos para tus conocimientos actuales. La puerta permanece sellada, impasible. Parece que necesitas más sabiduría para esta tarea.";
-                    }
-                },
-                "choices": (playerState) => {
-                    if (playerState.knowledge >= 2) {
-                        return [{ "text": "Entrar en la cámara del Orbe.", "nextSceneId": "orbe_chamber" }];
-                    } else {
-                        return [{ "text": "Rendirte y buscar una entrada secreta.", "nextSceneId": "santuario_secret" }];
-                    }
-                }
-            },
-            "santuario_secret": {
-                "text": "Después de buscar meticulosamente entre las enredaderas y las piedras desmoronadas, encuentras un pequeño pasaje oculto, casi invisible. Es estrecho y oscuro, pero parece seguro. Te arrastras por él y, para tu sorpresa, te lleva directamente a la imponente cámara del Orbe.",
-                "choices": [
-                    { "text": "Entrar en la cámara del Orbe.", "nextSceneId": "orbe_chamber" }
-                ]
-            },
-            "orbe_chamber": {
-                "text": "Dentro de la cámara, el **Orbe de Lumina** flota en el aire en el centro, irradiando una luz pulsante que llena cada rincón de la habitación. Es más grande y poderoso de lo que imaginabas, una fuente de energía cósmica pura. Puedes sentir su inmenso poder. ¿Qué haces con el Orbe?",
-                "choices": [
-                    { "text": "Tocar el Orbe directamente, buscando fusionarte con su energía.", "nextSceneId": "determine_absorption_ending" },
-                    { "text": "Intentar concentrarte y controlarlo, buscando dominar su poder para tus propios fines.", "nextSceneId": "determine_control_ending" },
-                    { "text": "Considerar destruirlo, para que su inmenso poder no caiga en malas manos y cause destrucción.", "nextSceneId": "determine_destruction_ending" }
-                ],
-                "mainEndingPoint": true // Marca esta escena como el punto de decisión final del ending principal
-            },
+        <section id="load-game-screen" class="game-section">
+            <h2>📂 Cargar Partida</h2>
+            <div id="save-slots-container">
+                <p>No hay partidas guardadas.</p>
+            </div>
+            <button id="back-to-intro-btn" class="secondary-btn">⬅️ Volver</button>
+        </section>
 
-            // --- Escenas intermedias para la lógica de finales ---
-            "determine_absorption_ending": {
-                "text": (playerState) => {
-                    // Aquí se pueden añadir condiciones para diferentes finales de absorción
-                    if (playerState.magicPower >= 2 && playerState.knowledge >= 1) {
-                         return "Al tocar el Orbe, una profunda conexión se establece. Tu mente y tu esencia se expanden, no te fusionas completamente, sino que te conviertes en su **Guardián Armonioso**, usando su luz para equilibrar el mundo. Tu viaje ha trascendido. ¡FINAL: El Guardián Armonioso de Lumina!";
-                    }
-                    return story["ending_absorption"].text; // Final por defecto de absorción
-                },
-                "choices": [],
-                "ending": true
-            },
-            "determine_control_ending": {
-                "text": (playerState) => {
-                    if (playerState.elaraReputation >= 2 && playerState.knowledge >= 2) {
-                        return story["ending_control_hero"].text;
-                    } else if (playerState.knowledge >= 3 && playerState.class === "erudito") { // Añadir condición de clase
-                        return story["ending_control_lonely_master"].text;
-                    } else if (playerState.elaraReputation <= -1 && playerState.kaelReputation <= -1) {
-                        return story["ending_control_tyrant"].text;
-                    } else {
-                        return story["ending_control_failed"].text;
-                    }
-                },
-                "choices": [],
-                "ending": true
-            },
-            "determine_destruction_ending": {
-                "text": (playerState) => {
-                    if (playerState.bravery >= 3 && playerState.class === "guerrero") { // Añadir condición de clase
-                        return story["ending_destruction_sacrifice"].text;
-                    } else {
-                        return story["ending_destruction_catastrophe"].text;
-                    }
-                },
-                "choices": [],
-                "ending": true
-            },
+        <section id="character-creation-screen" class="game-section">
+            <h2>✏️ ¡Crea a Tu Héroe (o Villano)! 🌟</h2>
+            <p>Define quién eres antes de pisar los pasillos de la prestigiosa U.A.</p>
+            
+            <div class="character-form">
+                <div class="input-group">
+                    <label for="player-name">Tu Nombre de Héroe (o Alias):</label>
+                    <input type="text" id="player-name" placeholder="Ej: Deku, Dynamight, Shoto..." maxlength="25" required>
+                    <small>Este será tu nombre público.</small>
+                </div>
 
-            // --- FINALES PRINCIPALES (Ejemplos, expandir a 20) ---
-            "ending_absorption": {
-                "text": "Al tocar el Orbe, una luz cegadora te envuelve. No hay dolor, solo una sensación de expansión infinita. Tus sentidos se disuelven y se reforman mientras te fusionas con la energía de Lumina. Te conviertes en parte del cosmos mismo, tu viaje como mortal ha terminado, pero tu esencia perdura como una nueva estrella en el firmamento. ¡FINAL PRINCIPAL: Fusión Cósmica!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_control_hero": {
-                "text": "Te concentras con toda tu voluntad, y el Orbe obedece. Su luz se calma y se moldea a tu alrededor. Has dominado el poder de Lumina, usándolo para traer una era de paz y prosperidad al reino. Con Elara a tu lado, los rumores de sus hazañas se esparcen por doquier, y son celebrados como héroes que trajeron una nueva era de luz. ¡FINAL PRINCIPAL: El Héroe de Lumina y su Aliada!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_control_lonely_master": {
-                "text": "Tu intelecto superior te permite comprender la verdadera naturaleza del Orbe. Lo dominas completamente, no por la fuerza, sino por la sabiduría. Te conviertes en un maestro de los secretos de Lumina, capaz de alterar la realidad a tu antojo, para bien o para mal. Vives como un guardián solitario, una leyenda en susurros. ¡FINAL PRINCIPAL: El Maestro Solitario de Lumina!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_control_tyrant": {
-                "text": "Cuando intentas controlar el Orbe, una oscuridad en tu corazón resuena con su poder inmenso. No lo domas, lo corrompes. Usas el Orbe para conquistar reinos, someter voluntades y acumular un poder ilimitado. Te conviertes en un tirano temido, cuyo nombre es sinónimo de destrucción y opresión. ¡FINAL PRINCIPAL: El Conquistador Oscuro!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_control_failed": {
-                "text": "Intentas controlar el Orbe, pero su inmenso poder es abrumador para tus habilidades actuales. La energía te golpea, dejándote débil y desorientado. Caes inconsciente, y al despertar, el Orbe ha desaparecido, y el Santuario se desmorona a tu alrededor. Apenas logras escapar, pero la oportunidad se ha perdido para siempre. ¡FINAL PRINCIPAL: Oportunidad Perdida!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_destruction_sacrifice": {
-                "text": "Con la convicción de que nadie debería poseer tal poder, golpeas el Orbe. Una explosión controlada de energía limpia el bosque, disipando su magia oscura sin causar daño colateral. Sobrevives, pero el Orbe ya no es una amenaza. El reino vive en paz, gracias a tu valeroso sacrificio. ¡FINAL PRINCIPAL: El Gran Sacrificio!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_destruction_catastrophe": {
-                "text": "Con una furia ciega, golpeas el Orbe sin comprender su verdadera naturaleza. Una explosión de energía caótica destruye el Santuario y gran parte del bosque circundante, dejando un cráter humeante. Sobrevives, pero eres el único testigo de la devastación que causaste. El poder es eliminado, pero a un costo terrible. ¡FINAL PRINCIPAL: Devastación Catastrófica!",
-                "choices": [],
-                "ending": true
-            },
-            "ending_guardian_harmonious": { // Nuevo final de absorción
-                "text": "Al tocar el Orbe, una profunda conexión se establece. Tu mente y tu esencia se expanden, no te fusionas completamente, sino que te conviertes en su **Guardián Armonioso**, usando su luz para equilibrar el mundo. Tu viaje ha trascendido. ¡FINAL PRINCIPAL: El Guardián Armonioso de Lumina!",
-                "choices": [],
-                "ending": true
-            }
-        };
+                <div class="option-group">
+                    <label for="gender">Género:</label>
+                    <select id="gender">
+                        <option value="male">♂️ Masculino</option>
+                        <option value="female">♀️ Femenino</option>
+                        <option value="non-binary">🚻 No Binario</option>
+                        <option value="prefer-not-say">🚫 Prefiero no decir</option>
+                    </select>
+                </div>
 
-        // --- Estado del Jugador ---
-        let playerState = {
-            gender: "neutral",
-            class: "none",
-            bravery: 0,
-            knowledge: 0,
-            agility: 0,
-            magicPower: 0,
-            elaraReputation: 0,
-            kaelReputation: 0,
-            inventory: [],
-            secondaryEndings: {} // Objeto para almacenar flags de mini-historias completadas
-        };
+                <div class="option-group">
+                    <label for="body-type">Complexión Física:</label>
+                    <select id="body-type">
+                        <option value="athletic">💪 Atlético</option>
+                        <option value="slim">🚶 Delgado</option>
+                        <option value="muscular">🏋️ Musculoso</option>
+                        <option value="average">🧍 Promedio</option>
+                    </select>
+                </div>
 
-        let currentSceneId = "character_creation"; // La primera escena es la creación de personaje
-        let mainEndingResult = ""; // Para almacenar el texto del final principal
-        let activatedSecondaryEndings = []; // Para almacenar los nombres de los finales secundarios activados
+                <div class="option-group">
+                    <label for="skin-tone">Tono de Piel:</label>
+                    <select id="skin-tone">
+                        <option value="light">⚪ Claro</option>
+                        <option value="fair">🧴 Justo</option>
+                        <option value="medium">🟤 Medio</option>
+                        <option value="dark">⚫ Oscuro</option>
+                    </select>
+                </div>
 
-        // --- Elementos del DOM ---
-        const startScreen = document.getElementById('start-screen');
-        const gameContainer = document.getElementById('game-container');
-        const endingsSummaryContainer = document.getElementById('endings-summary-container');
+                <div class="option-group">
+                    <label for="hair-style">Estilo de Cabello:</label>
+                    <select id="hair-style">
+                        <option value="short-spiky">💇‍♂️ Corto y puntiagudo</option>
+                        <option value="long-wavy">🧑‍🎤 Largo y ondulado</option>
+                        <option value="curly-afro">🦱 Rizos/Afro</option>
+                        <option value="straight-sleek">💇‍♀️ Liso y elegante</option>
+                        <option value="braids-dreads">💈 Trenzas/Rastas</option>
+                        <option value="bald">🪒 Calvo</option>
+                        <option value="unique">✨ Único (ej. dos tonos)</option>
+                    </select>
+                </div>
 
-        const genderSelect = document.getElementById('gender-select');
-        const classSelect = document.getElementById('class-select');
-        const startGameButton = document.getElementById('start-game-button');
-
-        const storyTextElement = document.getElementById('story-text');
-        const choicesContainer = document.getElementById('choices-container');
-        const restartButton = document.getElementById('restart-button'); // Botón de reiniciar en la escena de juego
-
-        const statGender = document.getElementById('stat-gender');
-        const statClass = document.getElementById('stat-class');
-        const statBravery = document.getElementById('stat-bravery');
-        const statKnowledge = document.getElementById('stat-knowledge');
-        const statAgility = document.getElementById('stat-agility');
-        const statMagicPower = document.getElementById('stat-magicpower');
-        const statElara = document.getElementById('stat-elara');
-        const statKael = document.getElementById('stat-kael');
-        const inventoryList = document.getElementById('inventory-list');
-
-        const mainEndingTextElement = document.getElementById('main-ending-text');
-        const secondaryEndingsList = document.getElementById('secondary-endings-list');
-        const finalRestartButton = document.getElementById('final-restart-button'); // Botón de reiniciar en la pantalla de resumen
-
-        // --- Funciones del Juego ---
-
-        // Función para aplicar bonificaciones iniciales según la clase
-        function applyClassBonuses() {
-            switch (playerState.class) {
-                case "guerrero":
-                    playerState.bravery += 1;
-                    break;
-                case "erudito":
-                    playerState.knowledge += 1;
-                    break;
-                case "picaro":
-                    playerState.agility += 1;
-                    break;
-                case "mago":
-                    playerState.magicPower += 1;
-                    break;
-            }
-        }
-
-        // Función para actualizar las estadísticas en la UI
-        function updateStats() {
-            statGender.textContent = playerState.gender.charAt(0).toUpperCase() + playerState.gender.slice(1);
-            statClass.textContent = playerState.class.charAt(0).toUpperCase() + playerState.class.slice(1);
-            statBravery.textContent = playerState.bravery;
-            statKnowledge.textContent = playerState.knowledge;
-            statAgility.textContent = playerState.agility;
-            statMagicPower.textContent = playerState.magicPower;
-            statElara.textContent = playerState.elaraReputation;
-            statKael.textContent = playerState.kaelReputation;
-
-            // Actualizar inventario
-            inventoryList.innerHTML = '';
-            if (playerState.inventory.length > 0) {
-                playerState.inventory.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    inventoryList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = "Vacío";
-                inventoryList.appendChild(li);
-            }
-        }
-
-        // Función para mostrar la pantalla de resumen de finales
-        function showEndingsSummary() {
-            gameContainer.classList.add('hidden');
-            endingsSummaryContainer.classList.remove('hidden');
-
-            mainEndingTextElement.textContent = mainEndingResult; // Muestra el final principal
-
-            secondaryEndingsList.innerHTML = '';
-            if (activatedSecondaryEndings.length > 0) {
-                activatedSecondaryEndings.forEach(flag => {
-                    const li = document.createElement('li');
-                    li.textContent = `- ${getSecondaryEndingDescription(flag)}`;
-                    secondaryEndingsList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = "No se activaron historias secundarias o logros específicos.";
-                secondaryEndingsList.appendChild(li);
-            }
-        }
-
-        // Función para obtener la descripción de un final secundario/logro
-        function getSecondaryEndingDescription(flag) {
-            // Aquí se puede expandir con descripciones más elaboradas para cada flag
-            switch (flag) {
-                case "LuminousHerbObtained":
-                    return "Obtuviste la Hierba Luminiscente, mostrando curiosidad por lo mágico.";
-                // Añadir más casos para cada secondaryEndingFlag
-                default:
-                    return flag;
-            }
-        }
-
-
-        // Función para cargar una escena
-        function loadScene(sceneId) {
-            currentSceneId = sceneId;
-            const scene = story[sceneId];
-
-            // Si llegamos a una escena intermedia para determinar el final principal
-            if (sceneId.startsWith("determine_")) {
-                let actualEndingSceneId;
-                if (sceneId === "determine_absorption_ending") {
-                    if (playerState.magicPower >= 2 && playerState.knowledge >= 1) {
-                         actualEndingSceneId = "ending_guardian_harmonious";
-                    } else {
-                        actualEndingSceneId = "ending_absorption";
-                    }
-                } else if (sceneId === "determine_control_ending") {
-                    if (playerState.elaraReputation >= 2 && playerState.knowledge >= 2) {
-                        actualEndingSceneId = "ending_control_hero";
-                    } else if (playerState.knowledge >= 3 && playerState.class === "erudito") {
-                        actualEndingSceneId = "ending_control_lonely_master";
-                    } else if (playerState.elaraReputation <= -1 || playerState.kaelReputation <= -1) {
-                        actualEndingSceneId = "ending_control_tyrant";
-                    } else {
-                        actualEndingSceneId = "ending_control_failed";
-                    }
-                } else if (sceneId === "determine_destruction_ending") {
-                    if (playerState.bravery >= 3 && playerState.class === "guerrero") {
-                        actualEndingSceneId = "ending_destruction_sacrifice";
-                    } else {
-                        actualEndingSceneId = "ending_destruction_catastrophe";
-                    }
-                }
-                // Almacenar el texto del final principal y mostrar resumen
-                mainEndingResult = story[actualEndingSceneId].text;
-                showEndingsSummary();
-                return;
-            }
-
-            // Vaciar las opciones anteriores
-            choicesContainer.innerHTML = '';
-            restartButton.classList.add('hidden'); // Ocultar el botón de reiniciar por defecto
-
-            // Añadir animación de entrada al texto
-            storyTextElement.classList.remove('visible');
-            setTimeout(() => {
-                // Si el texto es una función (para finales dinámicos o condiciones de escena), ejecutarlo con playerState
-                storyTextElement.textContent = typeof scene.text === 'function' ? scene.text(playerState) : scene.text;
-                storyTextElement.classList.add('visible');
-            }, 50); // Pequeño delay para la animación
-
-            updateStats(); // Actualizar stats cada vez que cambia la escena
-
-            // Si es un final (final principal), mostrar el resumen de finales
-            if (scene.ending) {
-                // Este bloque ahora es solo para finales que *no* son de la evaluación principal (ej. endings directos no manejados por determine_ending)
-                // Para los finales principales, la lógica se mueve a las determine_ending escenas
-                mainEndingResult = scene.text; // Guarda el texto del final actual
-                showEndingsSummary();
-            } else {
-                // Crear botones para cada opción
-                const currentChoices = typeof scene.choices === 'function' ? scene.choices(playerState) : scene.choices;
-                currentChoices.forEach((choice, index) => {
-                    const button = document.createElement('button');
-                    button.classList.add('choice-button');
-                    button.textContent = choice.text;
-                    button.onclick = () => handleChoice(choice.nextSceneId, choice.effects);
-                    choicesContainer.appendChild(button);
-                });
-            }
-        }
-
-        // Función para manejar la elección del jugador
-        function handleChoice(nextSceneId, effects) {
-            // Aplicar efectos al estado del jugador
-            if (effects) {
-                for (const stat in effects) {
-                    if (stat === "inventory") {
-                        playerState.inventory.push(...effects[stat]); // Añadir ítems al inventario
-                    } else if (playerState.hasOwnProperty(stat)) {
-                        playerState[stat] += effects[stat];
-                    }
-                }
-                // Si la elección activa un "secondaryEndingFlag", regístralo
-                if (story[nextSceneId] && story[nextSceneId].secondaryEndingFlag) {
-                    activatedSecondaryEndings.push(story[nextSceneId].secondaryEndingFlag);
-                }
-            }
-            loadScene(nextSceneId); // Cargar la siguiente escena
-        }
-
-        // Función para iniciar un nuevo juego (desde la pantalla de creación de personaje)
-        function startGame() {
-            // Reiniciar el estado del jugador completamente
-            playerState = {
-                gender: genderSelect.value,
-                class: classSelect.value,
-                bravery: 0,
-                knowledge: 0,
-                agility: 0,
-                magicPower: 0,
-                elaraReputation: 0,
-                kaelReputation: 0,
-                inventory: [],
-                secondaryEndings: {}
-            };
-            mainEndingResult = "";
-            activatedSecondaryEndings = [];
-
-            applyClassBonuses(); // Aplicar bonificaciones de la clase elegida
-
-            startScreen.classList.add('hidden');
-            endingsSummaryContainer.classList.add('hidden');
-            gameContainer.classList.remove('hidden');
-            loadScene("start"); // Cargar la primera escena del juego
-        }
-
-        // Función para mostrar la pantalla de inicio (creación de personaje)
-        function showStartScreen() {
-            gameContainer.classList.add('hidden');
-            endingsSummaryContainer.classList.add('hidden');
-            startScreen.classList.remove('hidden');
-        }
-
-        // Iniciar el juego mostrando la pantalla de creación de personaje al cargar la página
-        document.addEventListener('DOMContentLoaded', showStartScreen);
-        startGameButton.addEventListener('click', startGame);
-    </script>
-</body>
-</html>
+                <div class="option-group">
+                    <label for="hair-color">Color
