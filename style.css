@@ -1,0 +1,545 @@
+/* Importación de fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+/* Reset básico y estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a2e; /* Un color oscuro y heroico */
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinea el contenido al inicio */
+    align-items: center;
+    background-image: url('img/ua_background.jpg'); /* Imagen de fondo de la U.A. */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Para que el fondo no se mueva al hacer scroll */
+    overflow-y: auto; /* Permite el scroll si el contenido es largo */
+    padding: 20px;
+}
+
+/* Overlay de carga */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease-out;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay:not(.active) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Permite interactuar con elementos debajo una vez oculto */
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    border: 8px solid rgba(255, 255, 255, 0.3);
+    border-top: 8px solid #00aaff; /* Color de la U.A. */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Header */
+header {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.ua-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3em;
+    color: #ffd700; /* Dorado heroico */
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+header p {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1em;
+    color: #b0b0b0;
+}
+
+/* Contenedor principal del juego */
+#game-container {
+    background-color: rgba(28, 28, 48, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 30px; /* Espacio antes del footer */
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Para posicionar elementos internos si es necesario */
+}
+
+/* Control de visibilidad de secciones */
+.game-section {
+    display: none; /* Por defecto, todas las secciones están ocultas */
+    width: 100%;
+    text-align: center; /* Alineación por defecto para el contenido de la sección */
+    padding: 10px; /* Padding general para secciones */
+}
+
+.game-section.active {
+    display: block; /* Solo la sección activa se muestra */
+}
+
+/* Estilos de botones generales */
+button {
+    background-color: #ff5722; /* Naranja vibrante */
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 15px auto; /* Centrar y dar espacio */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    display: block; /* Ocupa todo el ancho disponible */
+    width: fit-content; /* Se ajusta al contenido */
+}
+
+button:hover {
+    background-color: #e64a19;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 87, 34, 0.4);
+}
+
+.secondary-btn {
+    background-color: #4a4a7e;
+    font-size: 1em;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.secondary-btn:hover {
+    background-color: #6a6ab0;
+    box-shadow: 0 5px 10px rgba(74, 74, 126, 0.4);
+}
+
+/* SECCIÓN: Intro Screen */
+.intro-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.intro-content h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5em;
+    color: #00aaff;
+    margin-bottom: 20px;
+}
+
+.intro-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* SECCIÓN: Load Game Screen */
+#save-slots-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.save-slot-item {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+.save-slot-item button {
+    margin: 0;
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+/* SECCIÓN: Character Creation Screen */
+.character-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left; /* Alineación del formulario */
+}
+
+.input-group, .option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: bold;
+    color: #8cffb8;
+    font-size: 1.1em;
+}
+
+input[type="text"], select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #00aaff;
+    background-color: #2b2b4e;
+    color: #e0e0e0;
+    font-size: 1em;
+    width: 100%;
+}
+
+small {
+    font-size: 0.85em;
+    color: #aaa;
+}
+
+.quirk-selection-area {
+    margin-top: 25px;
+    border-top: 2px solid #00aaff;
+    padding-top: 20px;
+}
+
+.quirk-options {
+    display: grid; /* Usamos Grid para un layout más adaptable */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    justify-content: center; /* Centra los elementos si no llenan la cuadrícula */
+    margin-top: 15px;
+}
+
+.quirk-button {
+    background-color: #4a4a7e;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    position: relative; /* Para el tooltip */
+    overflow: visible; /* Asegura que el tooltip se vea */
+    white-space: nowrap; /* Evita que el texto del botón se rompa */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quirk-button:hover {
+    background-color: #6a6ab0;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(74, 74, 126, 0.4);
+}
+
+.quirk-button.selected {
+    background-color: #00aaff; /* Azul brillante cuando seleccionado */
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.7);
+    transform: scale(1.05); /* Un poco más grande para destacar */
+}
+
+/* Tooltips para los Dones */
+.tooltip-text {
+    visibility: hidden;
+    width: 220px; /* Ancho ajustable */
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; /* Posición encima del botón */
+    left: 50%;
+    transform: translateX(-50%); /* Centra el tooltip */
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    font-size: 0.85em;
+    line-height: 1.4;
+    border: 1px solid #00aaff;
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+    white-space: normal; /* Permite que el texto se rompa en varias líneas */
+}
+
+.quirk-button:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.quirk-desc, .quirk-reaction {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    color: #b0b0b0;
+    font-style: italic;
+    min-height: 40px; /* Para mantener el espacio aunque no haya texto */
+    display: flex; /* Para centrar el texto verticalmente */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* SECCIÓN: Game Story Section */
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #00aaff;
+    flex-wrap: wrap; /* Para que los elementos se ajusten en pantallas pequeñas */
+    gap: 10px;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+    color: #ffd700;
+}
+
+.player-info p {
+    font-size: 0.9em;
+    color: #e0e0e0;
+}
+
+.game-stats-summary {
+    display: flex;
+    gap: 20px;
+    font-size: 0.95em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.game-stats-summary p {
+    white-space: nowrap; /* Evita que las estadísticas se rompan */
+}
+
+.story-panel {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 25px;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 350px; /* Espacio para el contenido de la historia */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.story-panel h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em;
+    color: #00aaff;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#story-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scene-visual {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto; /* Centrar la imagen */
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+}
+
+#story-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 80px; /* Mantiene un tamaño mínimo */
+}
+
+#character-dialogue {
+    font-size: 1.1em;
+    font-style: italic;
+    color: #cceeff;
+    background-color: rgba(13, 71, 161, 0.5);
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #00aaff;
+    margin-bottom: 10px;
+}
+
+#character-reactions {
+    font-size: 1em;
+    color: #b0b0b0;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.choice-button {
+    background-color: #388e3c; /* Verde heroico */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.05em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: left;
+    width: 100%; /* Para que ocupen todo el ancho */
+}
+
+.choice-button:hover {
+    background-color: #2e7d32;
+    transform: translateX(5px);
+}
+
+.game-utility-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.game-utility-btn {
+    background-color: #7b1fa2; /* Púrpura para utilidad */
+    font-size: 0.95em;
+    padding: 10px 18px;
+    margin: 0; /* Anula el margin general de los botones */
+    width: fit-content;
+}
+
+.game-utility-btn:hover {
+    background-color: #6a1b9a;
+    transform: translateY(-3px);
+}
+
+/* SECCIÓN: Battle Minigame */
+.battle-arena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.character-display {
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-char-area {
+    border: 3px solid #00aaff; /* Borde azul para el jugador */
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
+}
+
+.enemy-char-area {
+    border: 3px solid #f44336; /* Borde rojo para el enemigo */
+    box-shadow: 0 0 15px rgba(244, 67, 54, 0.5);
+}
+
+.battle-sprite {
+    width: 120px;
+    height: 120px;
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+    margin-bottom: 10px;
+}
+
+.health-bar-container {
+    width: 80%;
+    background-color: #333;
+    border-radius: 5px;
+    height: 25px;
+    overflow: hidden;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.health-bar {
+    height: 100%;
+    background-color: #4CAF50; /* Verde para la salud */
+    width: 100%; /* Controlado por JS
