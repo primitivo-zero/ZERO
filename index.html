@@ -3,100 +3,1489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Hero Academia: ¡Forja Tu Destino!</title>
-    <link rel="icon" href="img/ua_logo_favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>GameTok - Juegos con controles WASD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            touch-action: none;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0));
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0050;
+        }
+        
+        .search-icon, .upload-icon {
+            font-size: 20px;
+            margin: 0 10px;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .game-slide {
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: transform 0.5s ease;
+            transform: translateY(0);
+        }
+        
+        .game-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #111;
+        }
+        
+        .game-info {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .game-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .game-desc {
+            font-size: 16px;
+            margin-bottom: 20px;
+            max-width: 80%;
+            color: #ddd;
+        }
+        
+        .controls-info {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .side-buttons {
+            position: fixed;
+            right: 15px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .side-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .side-icon {
+            background-color: rgba(255,255,255,0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        
+        .side-text {
+            font-size: 12px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ff0050;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+            border: 2px solid white;
+        }
+        
+        /* Estilos específicos para los juegos */
+        #game1 {
+            background: linear-gradient(135deg, #ff0050, #8400ff);
+        }
+        
+        #game2 {
+            background: linear-gradient(135deg, #00ffaa, #0084ff);
+        }
+        
+        #game3 {
+            background: linear-gradient(135deg, #ffaa00, #ff0050);
+        }
+        
+        #game4 {
+            background: linear-gradient(135deg, #8400ff, #00ffaa);
+        }
+        
+        #game5 {
+            background: linear-gradient(135deg, #0084ff, #ffaa00);
+        }
+        
+        /* Juego 1: Memoria */
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-gap: 10px;
+        }
+        
+        .memory-card {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+        }
+        
+        .memory-card.flipped {
+            background-color: white;
+            transform: rotateY(180deg);
+        }
+        
+        /* Juego 2: Snake */
+        #snake-game {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+        
+        #snake-canvas {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        
+        /* Juego 3: Pong */
+        #pong-game {
+            width: 400px;
+            height: 250px;
+            position: relative;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .paddle {
+            position: absolute;
+            width: 15px;
+            height: 80px;
+            background-color: white;
+        }
+        
+        #left-paddle {
+            left: 10px;
+            top: 85px;
+        }
+        
+        #right-paddle {
+            right: 10px;
+            top: 85px;
+        }
+        
+        .ball {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border-radius: 50%;
+            left: 192.5px;
+            top: 117.5px;
+        }
+        
+        .score {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            color: white;
+        }
+        
+        #left-score {
+            left: 150px;
+        }
+        
+        #right-score {
+            right: 150px;
+        }
+        
+        /* Juego 4: Flappy Bird */
+        #flappy-game {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            background-color: #70c5ce;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        
+        #bird {
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            background-color: #ffcc00;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            left: 50px;
+            top: 200px;
+        }
+        
+        .pipe {
+            position: absolute;
+            width: 60px;
+            background-color: #5cb85c;
+            right: -60px;
+        }
+        
+        .pipe-top {
+            top: 0;
+        }
+        
+        .pipe-bottom {
+            bottom: 0;
+        }
+        
+        /* Juego 5: Breakout */
+        #breakout-game {
+            width: 400px;
+            height: 500px;
+            position: relative;
+            background-color: #111;
+            border-radius: 5px;
+        }
+        
+        #breakout-canvas {
+            background-color: rgba(0,0,0,0.2);
+        }
+        
+        /* Botones de control */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            background-color: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background-color: rgba(255,255,255,0.4);
+        }
+        
+        .play-btn {
+            background-color: #ff0050;
+        }
+        
+        .play-btn:hover {
+            background-color: #ff3373;
+        }
+        
+        /* Indicador de juego actual */
+        .game-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 100;
+        }
+        
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator-dot.active {
+            background-color: #ff0050;
+            transform: scale(1.2);
+        }
+        
+        /* Instrucciones */
+        .instructions {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 100;
+            text-align: center;
+        }
+        
+        /* Controles móviles */
+        .mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            width: 100%;
+            justify-content: center;
+            z-index: 90;
+        }
+        
+        .mobile-btn {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 10px;
+            font-size: 24px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .instructions {
+                bottom: 180px;
+            }
+            
+            .game-indicator {
+                bottom: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="loading-overlay" class="overlay active">
-        <div class="loading-content">
-            <h1>Cargando Tu Aventura de Héroe...</h1>
-            <div class="loading-spinner"></div>
-            <p>¡Plus Ultra!</p>
+    <div class="header">
+        <div class="logo">GameTok</div>
+        <div>
+            <span class="search-icon">🔍</span>
+            <span class="upload-icon">⬆️</span>
         </div>
     </div>
-
-    <header>
-        <div class="header-content">
-            <img src="img/ua_logo.png" alt="Logo U.A. Academy" class="ua-logo">
-            <h1>My Hero Academia: ¡Forja Tu Destino!</h1>
-            <p>Una aventura interactiva donde tus decisiones moldean el futuro de la sociedad de héroes... o villanos. 🌟</p>
+    
+    <div class="container" id="container">
+        <!-- Juego 1: Memoria -->
+        <div class="game-slide" id="game1">
+            <div class="game-container" id="memory-container">
+                <div class="memory-game" id="memory-game"></div>
+            </div>
+            <div class="game-info">
+                <h2 class="game-title">Juego de Memoria</h2>
+                <p class="game-desc">Encuentra todas las parejas de cartas iguales. Haz clic en las cartas para voltearlas.</p>
+                <div class="controls-info">Controles: Clic/Touch en las cartas</div>
+                <div class="control-buttons">
+                    <button class="control-btn play-btn" onclick="startMemoryGame()">Jugar</button>
+                    <button class="control-btn" onclick="resetMemoryGame()">Reiniciar</button>
+                </div>
+            </div>
+            <div class="side-buttons">
+                <div class="side-button">
+                    <div class="side-icon">❤️</div>
+                    <div class="side-text">12.5K</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">💬</div>
+                    <div class="side-text">543</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">🔄</div>
+                    <div class="side-text">Compartir</div>
+                </div>
+                <div class="side-button">
+                    <div class="avatar">JD</div>
+                </div>
+            </div>
         </div>
-    </header>
-
-    <main id="game-container">
-        <section id="intro-screen" class="game-section active">
-            <div class="intro-content">
-                <h2>¡Bienvenido al Mundo de los Dones!</h2>
-                <p>En un mundo donde el 80% de la población nace con superpoderes, los "Dones", la línea entre el bien y el mal es más delgada que nunca.</p>
-                <p>La **Academia U.A.** es el pináculo de la educación para futuros héroes. Tu carta de admisión ha llegado. Es tu oportunidad de demostrar tu valía.</p>
-                <button id="start-game-btn">¡Comenzar Nueva Partida! ▶️</button>
-                <button id="load-game-menu-btn" class="secondary-btn">📂 Cargar Partida Guardada</button>
+        
+        <!-- Juego 2: Snake -->
+        <div class="game-slide" id="game2">
+            <div class="game-container">
+                <div id="snake-game">
+                    <canvas id="snake-canvas" width="300" height="300"></canvas>
+                </div>
             </div>
-        </section>
-
-        <section id="load-game-screen" class="game-section">
-            <h2>📂 Cargar Partida</h2>
-            <div id="save-slots-container">
-                <p>No hay partidas guardadas.</p>
+            <div class="game-info">
+                <h2 class="game-title">Snake Clásico</h2>
+                <p class="game-desc">Controla la serpiente con las teclas WASD. Come la comida y hazla crecer.</p>
+                <div class="controls-info">Controles: WASD o botones móviles</div>
+                <div class="control-buttons">
+                    <button class="control-btn play-btn" onclick="startSnakeGame()">Jugar</button>
+                    <button class="control-btn" onclick="pauseSnakeGame()">Pausa</button>
+                </div>
             </div>
-            <button id="back-to-intro-btn" class="secondary-btn">⬅️ Volver</button>
-        </section>
+            <div class="side-buttons">
+                <div class="side-button">
+                    <div class="side-icon">❤️</div>
+                    <div class="side-text">18.2K</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">💬</div>
+                    <div class="side-text">892</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">🔄</div>
+                    <div class="side-text">Compartir</div>
+                </div>
+                <div class="side-button">
+                    <div class="avatar">SN</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Juego 3: Pong -->
+        <div class="game-slide" id="game3">
+            <div class="game-container">
+                <div id="pong-game">
+                    <div class="score" id="left-score">0</div>
+                    <div class="score" id="right-score">0</div>
+                    <div class="paddle" id="left-paddle"></div>
+                    <div class="paddle" id="right-paddle"></div>
+                    <div class="ball" id="ball"></div>
+                </div>
+            </div>
+            <div class="game-info">
+                <h2 class="game-title">Pong Retro</h2>
+                <p class="game-desc">Usa las teclas W/S para mover la paleta izquierda. Anota 5 puntos para ganar.</p>
+                <div class="controls-info">Controles: W (arriba), S (abajo)</div>
+                <div class="control-buttons">
+                    <button class="control-btn play-btn" onclick="startPongGame()">Jugar</button>
+                    <button class="control-btn" onclick="resetPongGame()">Reiniciar</button>
+                </div>
+            </div>
+            <div class="side-buttons">
+                <div class="side-button">
+                    <div class="side-icon">❤️</div>
+                    <div class="side-text">9.7K</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">💬</div>
+                    <div class="side-text">431</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">🔄</div>
+                    <div class="side-text">Compartir</div>
+                </div>
+                <div class="side-button">
+                    <div class="avatar">PG</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Juego 4: Flappy Bird -->
+        <div class="game-slide" id="game4">
+            <div class="game-container">
+                <div id="flappy-game">
+                    <div id="bird"></div>
+                </div>
+            </div>
+            <div class="game-info">
+                <h2 class="game-title">Flappy Bird</h2>
+                <p class="game-desc">Presiona ESPACIO o haz clic para hacer volar al pájaro. Evita los tubos.</p>
+                <div class="controls-info">Controles: ESPACIO o clic/touch</div>
+                <div class="control-buttons">
+                    <button class="control-btn play-btn" onclick="startFlappyGame()">Jugar</button>
+                    <button class="control-btn" onclick="resetFlappyGame()">Reiniciar</button>
+                </div>
+            </div>
+            <div class="side-buttons">
+                <div class="side-button">
+                    <div class="side-icon">❤️</div>
+                    <div class="side-text">15.3K</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">💬</div>
+                    <div class="side-text">726</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">🔄</div>
+                    <div class="side-text">Compartir</div>
+                </div>
+                <div class="side-button">
+                    <div class="avatar">FB</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Juego 5: Breakout -->
+        <div class="game-slide" id="game5">
+            <div class="game-container">
+                <div id="breakout-game">
+                    <canvas id="breakout-canvas" width="400" height="500"></canvas>
+                </div>
+            </div>
+            <div class="game-info">
+                <h2 class="game-title">Breakout</h2>
+                <p class="game-desc">Usa A/D para mover la plataforma y rebotar la pelota. Rompe todos los bloques.</p>
+                <div class="controls-info">Controles: A (izquierda), D (derecha)</div>
+                <div class="control-buttons">
+                    <button class="control-btn play-btn" onclick="startBreakoutGame()">Jugar</button>
+                    <button class="control-btn" onclick="resetBreakoutGame()">Reiniciar</button>
+                </div>
+            </div>
+            <div class="side-buttons">
+                <div class="side-button">
+                    <div class="side-icon">❤️</div>
+                    <div class="side-text">11.8K</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">💬</div>
+                    <div class="side-text">609</div>
+                </div>
+                <div class="side-button">
+                    <div class="side-icon">🔄</div>
+                    <div class="side-text">Compartir</div>
+                </div>
+                <div class="side-button">
+                    <div class="avatar">BR</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mobile-controls" id="mobile-controls">
+        <div class="mobile-btn" id="up-btn">↑</div>
+        <div class="mobile-btn" id="left-btn">←</div>
+        <div class="mobile-btn" id="right-btn">→</div>
+        <div class="mobile-btn" id="down-btn">↓</div>
+        <div class="mobile-btn" id="action-btn">␣</div>
+    </div>
+    
+    <div class="game-indicator" id="game-indicator">
+        <div class="indicator-dot active" data-index="0"></div>
+        <div class="indicator-dot" data-index="1"></div>
+        <div class="indicator-dot" data-index="2"></div>
+        <div class="indicator-dot" data-index="3"></div>
+        <div class="indicator-dot" data-index="4"></div>
+    </div>
+    
+    <div class="instructions">
+        Flechas ↑ ↓ para cambiar de juego<br>
+        WASD/ESPACIO para jugar
+    </div>
 
-        <section id="character-creation-screen" class="game-section">
-            <h2>✏️ ¡Crea a Tu Héroe (o Villano)! 🌟</h2>
-            <p>Define quién eres antes de pisar los pasillos de la prestigiosa U.A.</p>
+    <script>
+        // Navegación entre juegos
+        const games = document.querySelectorAll('.game-slide');
+        const dots = document.querySelectorAll('.indicator-dot');
+        let currentGame = 0;
+        let allowNavigation = true;
+        
+        function updateGamePosition() {
+            games.forEach((game, index) => {
+                game.style.transform = `translateY(${(index - currentGame) * 100}vh)`;
+            });
             
-            <div class="character-form">
-                <div class="input-group">
-                    <label for="player-name">Tu Nombre de Héroe (o Alias):</label>
-                    <input type="text" id="player-name" placeholder="Ej: Deku, Dynamight, Shoto..." maxlength="25" required>
-                    <small>Este será tu nombre público.</small>
-                </div>
-
-                <div class="option-group">
-                    <label for="gender">Género:</label>
-                    <select id="gender">
-                        <option value="male">♂️ Masculino</option>
-                        <option value="female">♀️ Femenino</option>
-                        <option value="non-binary">🚻 No Binario</option>
-                        <option value="prefer-not-say">🚫 Prefiero no decir</option>
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <label for="body-type">Complexión Física:</label>
-                    <select id="body-type">
-                        <option value="athletic">💪 Atlético</option>
-                        <option value="slim">🚶 Delgado</option>
-                        <option value="muscular">🏋️ Musculoso</option>
-                        <option value="average">🧍 Promedio</option>
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <label for="skin-tone">Tono de Piel:</label>
-                    <select id="skin-tone">
-                        <option value="light">⚪ Claro</option>
-                        <option value="fair">🧴 Justo</option>
-                        <option value="medium">🟤 Medio</option>
-                        <option value="dark">⚫ Oscuro</option>
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <label for="hair-style">Estilo de Cabello:</label>
-                    <select id="hair-style">
-                        <option value="short-spiky">💇‍♂️ Corto y puntiagudo</option>
-                        <option value="long-wavy">🧑‍🎤 Largo y ondulado</option>
-                        <option value="curly-afro">🦱 Rizos/Afro</option>
-                        <option value="straight-sleek">💇‍♀️ Liso y elegante</option>
-                        <option value="braids-dreads">💈 Trenzas/Rastas</option>
-                        <option value="bald">🪒 Calvo</option>
-                        <option value="unique">✨ Único (ej. dos tonos)</option>
-                    </select>
-                </div>
-
-                <div class="option-group">
-                    <label for="hair-color">Color
+            dots.forEach((dot, index) => {
+                if (index === currentGame) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        function goToGame(index) {
+            if (index >= 0 && index < games.length && allowNavigation) {
+                currentGame = index;
+                updateGamePosition();
+                
+                // Pausar todos los juegos al cambiar
+                pauseAllGames();
+            }
+        }
+        
+        function nextGame() {
+            if (currentGame < games.length - 1 && allowNavigation) {
+                currentGame++;
+                updateGamePosition();
+                pauseAllGames();
+            }
+        }
+        
+        function prevGame() {
+            if (currentGame > 0 && allowNavigation) {
+                currentGame--;
+                updateGamePosition();
+                pauseAllGames();
+            }
+        }
+        
+        function pauseAllGames() {
+            if (snakeGameStarted) pauseSnakeGame();
+            if (pongGameStarted) resetPongGame();
+            if (flappyGameStarted) resetFlappyGame();
+            if (breakoutGameStarted) resetBreakoutGame();
+        }
+        
+        // Eventos de teclado para navegación
+        document.addEventListener('keydown', (e) => {
+            // Solo permitir navegación si no se está jugando
+            if (!allowNavigation) return;
+            
+            if (e.key === 'ArrowDown') {
+                nextGame();
+            } else if (e.key === 'ArrowUp') {
+                prevGame();
+            }
+        });
+        
+        // Eventos para los puntos indicadores
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const index = parseInt(dot.getAttribute('data-index'));
+                goToGame(index);
+            });
+        });
+        
+        // Inicializar posición de los juegos
+        updateGamePosition();
+        
+        // Juego 1: Memoria
+        const memoryCards = ['🍎', '🍎', '🍌', '🍌', '🍒', '🍒', '🍓', '🍓', '🍊', '🍊', '🍋', '🍋', '🍉', '🍉', '🍇', '🍇'];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let gameStarted = false;
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        function createMemoryGame() {
+            const gameContainer = document.getElementById('memory-game');
+            gameContainer.innerHTML = '';
+            const shuffledCards = shuffleArray([...memoryCards]);
+            
+            shuffledCards.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.index = index;
+                card.dataset.value = emoji;
+                card.addEventListener('click', flipCard);
+                gameContainer.appendChild(card);
+            });
+        }
+        
+        function flipCard() {
+            if (!gameStarted || flippedCards.length >= 2 || this.classList.contains('flipped')) return;
+            
+            this.classList.add('flipped');
+            this.textContent = this.dataset.value;
+            flippedCards.push(this);
+            
+            if (flippedCards.length === 2) {
+                setTimeout(checkForMatch, 500);
+            }
+        }
+        
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.value === card2.dataset.value) {
+                card1.removeEventListener('click', flipCard);
+                card2.removeEventListener('click', flipCard);
+                matchedPairs++;
+                
+                if (matchedPairs === memoryCards.length / 2) {
+                    setTimeout(() => alert('¡Felicidades! Has ganado el juego.'), 300);
+                    allowNavigation = true;
+                }
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.textContent = '';
+                card2.textContent = '';
+            }
+            
+            flippedCards = [];
+        }
+        
+        function startMemoryGame() {
+            if (!gameStarted) {
+                gameStarted = true;
+                allowNavigation = false;
+                createMemoryGame();
+                document.querySelector('#game1 .play-btn').textContent = 'Jugando...';
+            }
+        }
+        
+        function resetMemoryGame() {
+            gameStarted = false;
+            allowNavigation = true;
+            matchedPairs = 0;
+            flippedCards = [];
+            createMemoryGame();
+            document.querySelector('#game1 .play-btn').textContent = 'Jugar';
+        }
+        
+        // Juego 2: Snake
+        const snakeCanvas = document.getElementById('snake-canvas');
+        const snakeCtx = snakeCanvas.getContext('2d');
+        let snake = [];
+        let food = {};
+        let direction = 'right';
+        let nextDirection = 'right';
+        let gameInterval;
+        let snakeGameStarted = false;
+        
+        // Controles móviles
+        const upBtn = document.getElementById('up-btn');
+        const leftBtn = document.getElementById('left-btn');
+        const rightBtn = document.getElementById('right-btn');
+        const downBtn = document.getElementById('down-btn');
+        
+        upBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (direction !== 'down') nextDirection = 'up';
+        });
+        
+        leftBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (direction !== 'right') nextDirection = 'left';
+        });
+        
+        rightBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (direction !== 'left') nextDirection = 'right';
+        });
+        
+        downBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (direction !== 'up') nextDirection = 'down';
+        });
+        
+        function initSnake() {
+            snake = [
+                {x: 150, y: 150},
+                {x: 140, y: 150},
+                {x: 130, y: 150},
+                {x: 120, y: 150},
+                {x: 110, y: 150}
+            ];
+            
+            generateFood();
+        }
+        
+        function generateFood() {
+            food = {
+                x: Math.floor(Math.random() * 30) * 10,
+                y: Math.floor(Math.random() * 30) * 10
+            };
+            
+            // Asegurarse de que la comida no aparezca en la serpiente
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    return generateFood();
+                }
+            }
+        }
+        
+        function drawSnake() {
+            snakeCtx.fillStyle = 'black';
+            snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+            
+            // Dibujar la serpiente
+            snake.forEach((segment, index) => {
+                snakeCtx.fillStyle = index === 0 ? '#ff0050' : '#00ffaa';
+                snakeCtx.fillRect(segment.x, segment.y, 10, 10);
+                snakeCtx.strokeStyle = 'black';
+                snakeCtx.strokeRect(segment.x, segment.y, 10, 10);
+            });
+            
+            // Dibujar la comida
+            snakeCtx.fillStyle = '#ffcc00';
+            snakeCtx.fillRect(food.x, food.y, 10, 10);
+        }
+        
+        function moveSnake() {
+            direction = nextDirection;
+            const head = {x: snake[0].x, y: snake[0].y};
+            
+            switch (direction) {
+                case 'up': head.y -= 10; break;
+                case 'down': head.y += 10; break;
+                case 'left': head.x -= 10; break;
+                case 'right': head.x += 10; break;
+            }
+            
+            // Verificar colisión con los bordes
+            if (head.x < 0 || head.x >= snakeCanvas.width || head.y < 0 || head.y >= snakeCanvas.height) {
+                gameOver();
+                return;
+            }
+            
+            // Verificar colisión consigo misma
+            for (let i = 0; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    gameOver();
+                    return;
+                }
+            }
+            
+            snake.unshift(head);
+            
+            // Verificar si comió la comida
+            if (head.x === food.x && head.y === food.y) {
+                generateFood();
+            } else {
+                snake.pop();
+            }
+            
+            drawSnake();
+        }
+        
+        function gameOver() {
+            clearInterval(gameInterval);
+            alert('Game Over! Puntuación: ' + (snake.length - 5));
+            snakeGameStarted = false;
+            allowNavigation = true;
+            document.querySelector('#game2 .play-btn').textContent = 'Jugar';
+        }
+        
+        function startSnakeGame() {
+            if (!snakeGameStarted) {
+                snakeGameStarted = true;
+                allowNavigation = false;
+                initSnake();
+                drawSnake();
+                gameInterval = setInterval(moveSnake, 100);
+                document.querySelector('#game2 .play-btn').textContent = 'Jugando...';
+            }
+        }
+        
+        function pauseSnakeGame() {
+            if (snakeGameStarted) {
+                clearInterval(gameInterval);
+                snakeGameStarted = false;
+                allowNavigation = true;
+                document.querySelector('#game2 .play-btn').textContent = 'Continuar';
+            } else if (snake.length > 0) {
+                startSnakeGame();
+            }
+        }
+        
+        function changeDirection(event) {
+            const key = event.key.toLowerCase();
+            
+            if (key === 'a' && direction !== 'right') nextDirection = 'left';
+            else if (key === 'w' && direction !== 'down') nextDirection = 'up';
+            else if (key === 'd' && direction !== 'left') nextDirection = 'right';
+            else if (key === 's' && direction !== 'up') nextDirection = 'down';
+        }
+        
+        // Juego 3: Pong
+        const leftPaddle = document.getElementById('left-paddle');
+        const rightPaddle = document.getElementById('right-paddle');
+        const ball = document.getElementById('ball');
+        const leftScore = document.getElementById('left-score');
+        const rightScore = document.getElementById('right-score');
+        
+        let leftPaddleY = 85;
+        let rightPaddleY = 85;
+        let ballX = 192.5;
+        let ballY = 117.5;
+        let ballSpeedX = 3;
+        let ballSpeedY = 3;
+        let leftPlayerScore = 0;
+        let rightPlayerScore = 0;
+        let pongGameInterval;
+        let pongGameStarted = false;
+        let wPressed = false;
+        let sPressed = false;
+        
+        // Controles móviles para Pong
+        const actionBtn = document.getElementById('action-btn');
+        
+        function resetBall() {
+            ballX = 192.5;
+            ballY = 117.5;
+            ballSpeedX = Math.random() > 0.5 ? 3 : -3;
+            ballSpeedY = Math.random() * 6 - 3;
+        }
+        
+        function updatePongGame() {
+            // Mover la pelota
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+            
+            // Rebote en los bordes superior e inferior
+            if (ballY <= 0 || ballY >= 235) {
+                ballSpeedY = -ballSpeedY;
+            }
+            
+            // Rebote en las paletas
+            if (ballX <= 25 && ballY >= leftPaddleY && ballY <= leftPaddleY + 80) {
+                ballSpeedX = -ballSpeedX * 1.1;
+                ballSpeedY = (ballY - (leftPaddleY + 40)) / 10;
+            }
+            
+            if (ballX >= 360 && ballY >= rightPaddleY && ballY <= rightPaddleY + 80) {
+                ballSpeedX = -ballSpeedX * 1.1;
+                ballSpeedY = (ballY - (rightPaddleY + 40)) / 10;
+            }
+            
+            // Puntuación
+            if (ballX < 0) {
+                rightPlayerScore++;
+                rightScore.textContent = rightPlayerScore;
+                resetBall();
+            }
+            
+            if (ballX > 400) {
+                leftPlayerScore++;
+                leftScore.textContent = leftPlayerScore;
+                resetBall();
+            }
+            
+            // Mover paleta derecha (IA simple)
+            if (rightPaddleY + 40 < ballY - 10) {
+                rightPaddleY += 4;
+            } else if (rightPaddleY + 40 > ballY + 10) {
+                rightPaddleY -= 4;
+            }
+            
+            // Mover paleta izquierda (jugador)
+            if (wPressed && leftPaddleY > 0) leftPaddleY -= 5;
+            if (sPressed && leftPaddleY < 170) leftPaddleY += 5;
+            
+            // Limitar paletas
+            if (leftPaddleY < 0) leftPaddleY = 0;
+            if (leftPaddleY > 170) leftPaddleY = 170;
+            if (rightPaddleY < 0) rightPaddleY = 0;
+            if (rightPaddleY > 170) rightPaddleY = 170;
+            
+            // Actualizar posiciones
+            leftPaddle.style.top = leftPaddleY + 'px';
+            rightPaddle.style.top = rightPaddleY + 'px';
+            ball.style.left = ballX + 'px';
+            ball.style.top = ballY + 'px';
+            
+            // Verificar ganador
+            if (leftPlayerScore >= 5 || rightPlayerScore >= 5) {
+                clearInterval(pongGameInterval);
+                pongGameStarted = false;
+                allowNavigation = true;
+                alert((leftPlayerScore >= 5 ? '¡Jugador Izquierdo' : '¡Jugador Derecho') + ' gana!');
+                document.querySelector('#game3 .play-btn').textContent = 'Jugar';
+            }
+        }
+        
+        function startPongGame() {
+            if (!pongGameStarted) {
+                pongGameStarted = true;
+                allowNavigation = false;
+                leftPlayerScore = 0;
+                rightPlayerScore = 0;
+                leftScore.textContent = '0';
+                rightScore.textContent = '0';
+                resetBall();
+                pongGameInterval = setInterval(updatePongGame, 20);
+                document.querySelector('#game3 .play-btn').textContent = 'Jugando...';
+            }
+        }
+        
+        function resetPongGame() {
+            clearInterval(pongGameInterval);
+            pongGameStarted = false;
+            allowNavigation = true;
+            document.querySelector('#game3 .play-btn').textContent = 'Jugar';
+        }
+        
+        function handlePongKeyDown(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'w') wPressed = true;
+            if (key === 's') sPressed = true;
+        }
+        
+        function handlePongKeyUp(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'w') wPressed = false;
+            if (key === 's') sPressed = false;
+        }
+        
+        // Controles móviles para Pong
+        upBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            wPressed = true;
+        });
+        
+        upBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            wPressed = false;
+        });
+        
+        downBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            sPressed = true;
+        });
+        
+        downBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            sPressed = false;
+        });
+        
+        // Juego 4: Flappy Bird
+        const bird = document.getElementById('bird');
+        let birdY = 200;
+        let birdVelocity = 0;
+        let gravity = 0.5;
+        let pipes = [];
+        let pipeInterval;
+        let flappyGameInterval;
+        let flappyGameStarted = false;
+        let score = 0;
+        let spacePressed = false;
+        
+        function startFlappyGame() {
+            if (!flappyGameStarted) {
+                flappyGameStarted = true;
+                allowNavigation = false;
+                birdY = 200;
+                birdVelocity = 0;
+                pipes = [];
+                score = 0;
+                
+                // Limpiar pipes existentes
+                document.querySelectorAll('.pipe').forEach(pipe => pipe.remove());
+                
+                // Generar pipes
+                pipeInterval = setInterval(createPipe, 2000);
+                
+                // Iniciar juego
+                flappyGameInterval = setInterval(updateFlappyGame, 20);
+                document.querySelector('#game4 .play-btn').textContent = 'Jugando...';
+            }
+        }
+        
+        function createPipe() {
+            const pipeGap = 150;
+            const pipeHeight = Math.floor(Math.random() * 200) + 50;
+            
+            const pipeTop = document.createElement('div');
+            pipeTop.className = 'pipe pipe-top';
+            pipeTop.style.height = pipeHeight + 'px';
+            
+            const pipeBottom = document.createElement('div');
+            pipeBottom.className = 'pipe pipe-bottom';
+            pipeBottom.style.height = (400 - pipeHeight - pipeGap) + 'px';
+            
+            document.getElementById('flappy-game').appendChild(pipeTop);
+            document.getElementById('flappy-game').appendChild(pipeBottom);
+            
+            pipes.push({
+                top: pipeTop,
+                bottom: pipeBottom,
+                x: 300,
+                passed: false
+            });
+        }
+        
+        function updateFlappyGame() {
+            // Aplicar gravedad
+            birdVelocity += gravity;
+            birdY += birdVelocity;
+            
+            // Saltar si se presiona espacio
+            if (spacePressed) {
+                birdVelocity = -8;
+                spacePressed = false;
+            }
+            
+            // Mover pipes
+            for (let i = 0; i < pipes.length; i++) {
+                const pipe = pipes[i];
+                pipe.x -= 2;
+                pipe.top.style.left = pipe.x + 'px';
+                pipe.bottom.style.left = pipe.x + 'px';
+                
+                // Detección de colisión
+                if (
+                    (50 < pipe.x + 60 && 50 + 40 > pipe.x) && 
+                    (birdY < pipe.top.offsetHeight || birdY + 30 > 400 - pipe.bottom.offsetHeight)
+                ) {
+                    gameOverFlappy();
+                    return;
+                }
+                
+                // Puntuación
+                if (!pipe.passed && pipe.x + 60 < 50) {
+                    pipe.passed = true;
+                    score++;
+                }
+                
+                // Eliminar pipes fuera de pantalla
+                if (pipe.x < -60) {
+                    pipe.top.remove();
+                    pipe.bottom.remove();
+                    pipes.splice(i, 1);
+                    i--;
+                }
+            }
+            
+            // Verificar colisión con el suelo o techo
+            if (birdY > 370 || birdY < 0) {
+                gameOverFlappy();
+                return;
+            }
+            
+            // Actualizar posición del pájaro
+            bird.style.top = birdY + 'px';
+        }
+        
+        function gameOverFlappy() {
+            clearInterval(flappyGameInterval);
+            clearInterval(pipeInterval);
+            flappyGameStarted = false;
+            allowNavigation = true;
+            alert('Game Over! Puntuación: ' + score);
+            document.querySelector('#game4 .play-btn').textContent = 'Jugar';
+        }
+        
+        function resetFlappyGame() {
+            clearInterval(flappyGameInterval);
+            clearInterval(pipeInterval);
+            flappyGameStarted = false;
+            allowNavigation = true;
+            document.querySelector('#game4 .play-btn').textContent = 'Jugar';
+            document.querySelectorAll('.pipe').forEach(pipe => pipe.remove());
+            bird.style.top = '200px';
+        }
+        
+        function handleFlappyKeyDown(e) {
+            if (e.key === ' ') {
+                e.preventDefault();
+                spacePressed = true;
+            }
+        }
+        
+        // Controles móviles para Flappy Bird
+        actionBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            spacePressed = true;
+        });
+        
+        // Juego 5: Breakout
+        const breakoutCanvas = document.getElementById('breakout-canvas');
+        const breakoutCtx = breakoutCanvas.getContext('2d');
+        let breakoutGameStarted = false;
+        let breakoutInterval;
+        let aPressed = false;
+        let dPressed = false;
+        
+        // Variables del juego
+        let brickRowCount = 5;
+        let brickColumnCount = 8;
+        let brickWidth = 75;
+        let brickHeight = 20;
+        let brickPadding = 10;
+        let brickOffsetTop = 60;
+        let brickOffsetLeft = 30;
+        
+        let bricks = [];
+        for (let c = 0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for (let r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = { x: 0, y: 0, status: 1 };
+            }
+        }
+        
+        let paddleWidth = 100;
+        let paddleHeight = 15;
+        let paddleX = (breakoutCanvas.width - paddleWidth) / 2;
+        
+        let ballBreakoutX = breakoutCanvas.width / 2;
+        let ballBreakoutY = breakoutCanvas.height - 30;
+        let ballBreakoutRadius = 10;
+        let ballBreakoutDX = 4;
+        let ballBreakoutDY = -4;
+        
+        function drawBreakout() {
+            // Limpiar canvas
+            breakoutCtx.clearRect(0, 0, breakoutCanvas.width, breakoutCanvas.height);
+            
+            // Dibujar ladrillos
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                        bricks[c][r].x = brickX;
+                        bricks[c][r].y = brickY;
+                        
+                        breakoutCtx.beginPath();
+                        breakoutCtx.rect(brickX, brickY, brickWidth, brickHeight);
+                        breakoutCtx.fillStyle = ['#ff0050', '#00ffaa', '#ffaa00', '#8400ff', '#0084ff'][r];
+                        breakoutCtx.fill();
+                        breakoutCtx.closePath();
+                    }
+                }
+            }
+            
+            // Dibujar paleta
+            breakoutCtx.beginPath();
+            breakoutCtx.rect(paddleX, breakoutCanvas.height - paddleHeight, paddleWidth, paddleHeight);
+            breakoutCtx.fillStyle = '#fff';
+            breakoutCtx.fill();
+            breakoutCtx.closePath();
+            
+            // Dibujar pelota
+            breakoutCtx.beginPath();
+            breakoutCtx.arc(ballBreakoutX, ballBreakoutY, ballBreakoutRadius, 0, Math.PI * 2);
+            breakoutCtx.fillStyle = '#fff';
+            breakoutCtx.fill();
+            breakoutCtx.closePath();
+        }
+        
+        function updateBreakout() {
+            // Limpiar canvas
+            breakoutCtx.clearRect(0, 0, breakoutCanvas.width, breakoutCanvas.height);
+            
+            // Dibujar ladrillos
+            drawBricks();
+            
+            // Colisión con los bordes
+            if (ballBreakoutX + ballBreakoutDX > breakoutCanvas.width - ballBreakoutRadius || 
+                ballBreakoutX + ballBreakoutDX < ballBreakoutRadius) {
+                ballBreakoutDX = -ballBreakoutDX;
+            }
+            
+            if (ballBreakoutY + ballBreakoutDY < ballBreakoutRadius) {
+                ballBreakoutDY = -ballBreakoutDY;
+            } else if (ballBreakoutY + ballBreakoutDY > breakoutCanvas.height - ballBreakoutRadius) {
+                if (ballBreakoutX > paddleX && ballBreakoutX < paddleX + paddleWidth) {
+                    ballBreakoutDY = -ballBreakoutDY;
+                } else {
+                    // Game over
+                    clearInterval(breakoutInterval);
+                    breakoutGameStarted = false;
+                    allowNavigation = true;
+                    alert('Game Over!');
+                    document.querySelector('#game5 .play-btn').textContent = 'Jugar';
+                    return;
+                }
+            }
+            
+            // Mover paleta
+            if (aPressed && paddleX > 0) paddleX -= 7;
+            if (dPressed && paddleX < breakoutCanvas.width - paddleWidth) paddleX += 7;
+            
+            // Detección de colisión con ladrillos
+            collisionDetection();
+            
+            // Mover pelota
+            ballBreakoutX += ballBreakoutDX;
+            ballBreakoutY += ballBreakoutDY;
+            
+            // Dibujar todo
+            drawBreakout();
+            
+            // Verificar victoria
+            if (bricks.every(column => column.every(brick => brick.status === 0))) {
+                clearInterval(breakoutInterval);
+                breakoutGameStarted = false;
+                allowNavigation = true;
+                alert('¡Felicidades! Has ganado.');
+                document.querySelector('#game5 .play-btn').textContent = 'Jugar';
+            }
+        }
+        
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                        let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                        
+                        breakoutCtx.beginPath();
+                        breakoutCtx.rect(brickX, brickY, brickWidth, brickHeight);
+                        breakoutCtx.fillStyle = ['#ff0050', '#00ffaa', '#ffaa00', '#8400ff', '#0084ff'][r];
+                        breakoutCtx.fill();
+                        breakoutCtx.closePath();
+                    }
+                }
+            }
+        }
+        
+        function collisionDetection() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    let brick = bricks[c][r];
+                    if (brick.status === 1) {
+                        if (
+                            ballBreakoutX > brick.x && 
+                            ballBreakoutX < brick.x + brickWidth && 
+                            ballBreakoutY > brick.y && 
+                            ballBreakoutY < brick.y + brickHeight
+                        ) {
+                            ballBreakoutDY = -ballBreakoutDY;
+                            brick.status = 0;
+                        }
+                    }
+                }
+            }
+        }
+        
+        function handleBreakoutKeyDown(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'a') aPressed = true;
+            if (key === 'd') dPressed = true;
+        }
+        
+        function handleBreakoutKeyUp(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'a') aPressed = false;
+            if (key === 'd') dPressed = false;
+        }
+        
+        // Controles móviles para Breakout
+        leftBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            aPressed = true;
+        });
+        
+        leftBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            aPressed = false;
+        });
+        
+        rightBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            dPressed = true;
+        });
+        
+        rightBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            dPressed = false;
+        });
+        
+        function startBreakoutGame() {
+            if (!breakoutGameStarted) {
+                breakoutGameStarted = true;
+                allowNavigation = false;
+                
+                // Resetear juego
+                for (let c = 0; c < brickColumnCount; c++) {
+                    for (let r = 0; r < brickRowCount; r++) {
+                        bricks[c][r].status = 1;
+                    }
+                }
+                
+                paddleX = (breakoutCanvas.width - paddleWidth) / 2;
+                ballBreakoutX = breakoutCanvas.width / 2;
+                ballBreakoutY = breakoutCanvas.height - 30;
+                ballBreakoutDX = 4;
+                ballBreakoutDY = -4;
+                
+                // Iniciar juego
+                breakoutInterval = setInterval(updateBreakout, 20);
+                document.querySelector('#game5 .play-btn').textContent = 'Jugando...';
+            }
+        }
+        
+        function resetBreakoutGame() {
+            clearInterval(breakoutInterval);
+            breakoutGameStarted = false;
+            allowNavigation = true;
+            document.querySelector('#game5 .play-btn').textContent = 'Jugar';
+        }
+        
+        // Configurar event listeners para los juegos
+        document.addEventListener('keydown', (e) => {
+            if (!allowNavigation) {
+                // Snake
+                if (currentGame === 1) changeDirection(e);
+                // Pong
+                if (currentGame === 2) handlePongKeyDown(e);
+                // Flappy Bird
+                if (currentGame === 3) handleFlappyKeyDown(e);
+                // Breakout
+                if (currentGame === 4) handleBreakoutKeyDown(e);
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            if (!allowNavigation) {
+                // Pong
+                if (currentGame === 2) handlePongKeyUp(e);
+                // Breakout
+                if (currentGame === 4) handleBreakoutKeyUp(e);
+            }
+        });
+        
+        // Evento para Flappy Bird (clic/touch)
+        document.getElementById('flappy-game').addEventListener('click', () => {
+            if (currentGame === 3 && flappyGameStarted) {
+                spacePressed = true;
+            }
+        });
+        
+        // Inicializar algunos elementos
+        createMemoryGame();
+    </script>
+</body>
+</html>
